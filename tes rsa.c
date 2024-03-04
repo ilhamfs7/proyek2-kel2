@@ -192,7 +192,6 @@ int main()
 		    break;
 		case 2:
 			printf("\nMasukkan teks yang akan di-enkripsi : ");
-			scanf("%c", &ch);
 			
 			// Membaca setiap karakter hingga ditemukan newline
 		    while ((karakter = getchar()) != '\n') {
