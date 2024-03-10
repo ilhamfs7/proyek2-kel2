@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdio.h>// liblary untuk menampilkan (printf)
+#include <stdlib.h>//liblary  untuk mengalokasi memory konversi tipe data dan pengelolaan proses 
+#include <string.h>//  liblary untuk menghitung panjang string ,menyalin string lain atau membandingkan string lain 
 
 typedef struct {
     unsigned char blue;
