@@ -2,6 +2,14 @@
 #include <string.h>
 #include "encodeLSB.h"
 
+void readBMPHeader(FILE *fin, unsigned char header[54]) {
+    fread(header, sizeof(unsigned char), 54, fin);
+}
+
+void readBMPPixel(FILE *fin, unsigned char pixel_data[3]) {
+    fread(pixel_data, sizeof(unsigned char), 3, fin);
+}
+
 void encodeLSB(const char *inputimg, const char *outputimg, const char *pesan) {
     FILE *fin, *fout;
     unsigned char header[54], pixel_data[3];
