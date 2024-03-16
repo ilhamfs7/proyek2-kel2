@@ -3,8 +3,9 @@ b. Petunjuk Konfigurasi
 c. Struktur/Hirarki Program
 d. Daftar Fitur Aplikasi
 Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
-1) 
+1) Generate Kunci Public dan Private untuk RSA
 2) Enkripsi menggunakan RSA
+3) Dekripsi menggunakan RSA
 
 About Us: 
 Kami adalah mahasiswa semester 2 dari Polteknik Negeri Bandung Jurusan Teknik Komputer dan Informatika Program Studi D3 Teknik Informatika
