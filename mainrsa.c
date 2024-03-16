@@ -89,8 +89,8 @@ int main() {
                             break;
                     }
                     getchar(); // Membersihkan buffer stdin
-			        printf("Tekan enter untuk melanjutkan...\n");
-			        getchar(); // Menunggu user menekan enter
+		    printf("Tekan enter untuk melanjutkan...\n");
+		    getchar(); // Menunggu user menekan enter
                 } while (pil != 2);
                 break;
             case 2:
