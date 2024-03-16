@@ -6,6 +6,8 @@ Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
 1) Generate Kunci Public dan Private untuk RSA
 2) Enkripsi menggunakan RSA
 3) Dekripsi menggunakan RSA
+4) Enkripsi menggunakan LSB
+5) Dekripsi menggunakan LSB
 
 About Us: 
 Kami adalah mahasiswa semester 2 dari Polteknik Negeri Bandung Jurusan Teknik Komputer dan Informatika Program Studi D3 Teknik Informatika
