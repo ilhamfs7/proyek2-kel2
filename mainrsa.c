@@ -13,9 +13,9 @@ int main() {
 
     do {
         system("cls");
-        printf("=======================\n");
-        printf("   Kriptografi RSA\n");
-        printf("=======================\n");
+        printf("=================================\n");
+        printf("        Kriptografi RSA\n");
+        printf("=================================\n");
         printf("Menu Utama:\n");
         printf("1. Generate Kunci\n");
         printf("2. Keluar\n");
