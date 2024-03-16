@@ -1,5 +1,5 @@
-#include "rsa.h"
 #include <stdio.h>
+#include "rsa.h"
 
 int main() {
     long long e, d, n;
