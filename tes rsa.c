@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <time.h> // Untuk time()
 
-long long mulmod(long long a, long long b, long long mod)	//untuk mengecek prima bilangan besar
-//generate kemudian di cek angkanya prima atau bukan
+long long mulmod(long long a, long long b, long long mod)
 {
     long long x = 0, y = a % mod;
     while (b > 0)
@@ -21,49 +20,57 @@ long long mulmod(long long a, long long b, long long mod)	//untuk mengecek prima
 
 /* operasi modular */
 
-long long modulo(long long base, long long exponent, long long mod)
+long long modular(long long bil, long long pangkat, long long mod)
 {
-    long long x = 1;
-    long long y = base;
-    while (exponent > 0)
+    long long x, y;
+    
+    x = 1;
+    y = bil;
+    while (pangkat > 0)
     {
-        if (exponent % 2 == 1)
+        if (pangkat % 2 == 1)
+        {
             x = (x * y) % mod;
+        }  
         y = (y * y) % mod;
-        exponent = exponent / 2;
+        pangkat /= 2;
     }
     return x % mod;
 }
 
 /* tes prima miller rabin*/
 
-int Miller(long long p, int iteration)
+int isPrime(long long bil, int perulangan)
 {
     int i;
-    long long s;
-    if (p < 2)
+    long long s, a, temp, mod;
+    
+    if (bil < 2)
     {
         return 0;
     }
-    if (p != 2 && p % 2 == 0)
+    if (bil != 2 && bil % 2 == 0)
     {
         return 0;
     }
-    s = p - 1;
+    
+    s = bil - 1;
     while (s % 2 == 0)
     {
-        s /= 2;
+        s = s / 2;
     }
-    for (i = 0; i < iteration; i++)
+    for (i = 0; i < perulangan; i++)
     {
-        long long a = rand() % (p - 1) + 1, temp = s;
-        long long mod = modulo(a, temp, p);
-        while (temp != p - 1 && mod != 1 && mod != p - 1)
-        {
-            mod = mulmod(mod, mod, p);
+        a = rand() % (bil - 1) + 1;
+        temp = s;
+        mod = modular(a, temp, bil);
+        
+        while (temp != bil - 1 && mod != 1 && mod != bil - 1)
+       {
+            mod = mulmod(mod, mod, bil);
             temp *= 2;
         }
-        if (mod != p - 1 && temp % 2 == 0)
+        if (mod != bil - 1 && temp % 2 == 0)
         {
             return 0;
         }
@@ -73,7 +80,7 @@ int Miller(long long p, int iteration)
 
 /* mencari fpb dari dua bilangan */
 
-int gcd(int a, int b)
+int fpb(int a, int b)
 {
     int q, r1, r2, r;
 
@@ -99,7 +106,7 @@ int gcd(int a, int b)
     return r1;
 }
 
-int inverse(int a, int b)
+int privateKey(int a, int b)
 {
     int inv;
     int q, r, r1 = a, r2 = b, t, t1 = 0, t2 = 1;
@@ -129,121 +136,190 @@ int inverse(int a, int b)
     return inv;
 }
 
-int KeyGeneration(long long *e, long long *d, long long *n)
+int KeyGeneration(long long *e, long long *d, long long *n, FILE *file_key)
 {
     long long p, q, phi_n;
     srand(time(0));
-
     do
     {
         do
-            p = ((rand() << 15) ^ rand());
+            p = rand();
         while (p % 2 == 0);
-
-    } while (!Miller(p, 5));
+    } while (!isPrime(p, 5));
 
     do
     {
         do
-            q = ((rand() << 15) ^ rand());
+           q = rand();
         while (q % 2 == 0);
-    } while (!Miller(q, 5));
+    } while (!isPrime(q, 5));
 
     *n = p * q;
     phi_n = (p - 1) * (q - 1);
 
     do
         *e = rand() % (phi_n - 2) + 2; // 1 < e < phi_n
-    while (gcd(*e, phi_n) != 1);
+    while (fpb(*e, phi_n) != 1);
 
-    *d = inverse(phi_n, *e);
+    *d = privateKey(phi_n, *e);
+
+    fprintf(file_key, "Public Key (e, n): (%lld, %lld)\n", *e, *n);
+    fprintf(file_key, "Private Key (d, n): (%lld, %lld)\n", *d, *n);
 
     return 1; 
 }
 
-// Main
-int main()
-{
-    long long e, d, n;
-    int pil;
-    char ch;
-    char *pesan = NULL; // Pointer untuk menyimpan pesan dari pengguna
-    int panjang_pesan = 0; // Panjang pesan yang dimasukkan pengguna
-    char karakter;
+// enkripsi
+void enkripsi(long long e, long long n, char *pesan, int panjang_pesan, FILE *file) {
+    int i;
+    long long cipher;
 
-    printf("Pilih Operasi:\n");
-    printf("1. Generate Kunci\n");
-    printf("2. Enkripsi\n");
-    printf("3. Deskripsi\n");
-    printf("Masukkan pilihan (1, 2, or 3): ");
-    scanf("%d", &pil);
-    
-    switch (pil) {
-        case 1:
-        	if (KeyGeneration(&e, &d, &n))
-		    {
-		        printf("Public Key (e, n): (%lld, %lld)\n", e, n);
-		        printf("Private Key (d, n): (%lld, %lld)\n", d, n);
-		    }
-		    else
-		    {
-		        printf("Kunci gagal di-generate\n");
-		    }
-		    break;
-		case 2:
-			printf("\nMasukkan teks yang akan di-enkripsi : ");
-			
-			// Membaca setiap karakter hingga ditemukan newline
-		    while ((karakter = getchar()) != '\n') {
-		        // Mengalokasikan memori untuk setiap karakter yang dimasukkan pengguna
-		        pesan = (char *)realloc(pesan, (panjang_pesan + 1) * sizeof(char));
-		
-		        if (pesan == NULL) {
-		            printf("Alokasi memori gagal!");
-		            return 1;
-		        }
-		
-		        pesan[panjang_pesan++] = karakter; // Menyimpan karakter ke dalam array dinamis
-		    }
-		
-		    pesan = (char *)realloc(pesan, (panjang_pesan + 1) * sizeof(char));
-		    pesan[panjang_pesan] = '\0'; // Menambahkan null-terminator untuk menandai akhir dari string
-		
-		    printf("Pesan yang dimasukkan: %s\n", pesan);
-		
-		    // Mencetak array karakter
-		    printf("Array karakter: ");
-		    
-		    int i;
-		    for (i = 0; i < panjang_pesan; i++) {
-		        printf("%c ", pesan[i]);
-		    }
-		    printf("\n");
-		
-			// Konversi ke ASCII dan simpan ke dalam array dinamis hasil_ascii
-		    int *hasil_ascii = (int *)malloc(panjang_pesan * sizeof(int));
-		    if (hasil_ascii == NULL) {
-		        printf("Alokasi memori gagal!");
-		        free(pesan);
-		        return 1;
-		    }
-		
-		    printf("Hasil ASCII: ");
-		    for (i = 0; i < panjang_pesan; i++) {
-		        hasil_ascii[i] = (int)pesan[i];
-		        printf("%d ", hasil_ascii[i]);
-		    }
-		    printf("\n");
-		
-		    // Membebaskan memori yang dialokasikan untuk array pesan dan hasil_ascii
-		    free(pesan);
-		    free(hasil_ascii);
-			
-			break;
-			
-		default:
-            printf("Pilihan tidak tepat.\n");
-            
-	}
+    for (i = 0; i < panjang_pesan; i++) {
+        cipher = modular(pesan[i], e, n);
+        fprintf(file, "%lld ", cipher); // Menulis hasil enkripsi ke dalam file
+    }
+    fprintf(file, "\n");
+}
+
+// deskripsi
+void dekripsi_file(long long d, long long n, FILE *file_in, FILE *file_out) {
+    long long cipher;
+    char c;
+
+    while (fscanf(file_in, "%lld", &cipher) != EOF) {
+        c = (char)modular(cipher, d, n);
+        fprintf(file_out, "%c", c);
+    }
+}
+
+// Main
+int main() {
+    long long e, d, n;
+    int pil, i, len, panjang_pesan;
+    char str[100];
+    char input_filename[100];
+    char output_filename[100];
+    char filename[100];
+    char key_filename[100];
+    FILE *file, *file_key, *file_in, *file_out;
+
+    do {
+        system("cls");
+        printf("=======================\n");
+        printf("   Kriptografi RSA\n");
+        printf("=======================\n");
+        printf("Menu Utama:\n");
+        printf("1. Generate Kunci\n");
+        printf("2. Keluar\n");
+        printf("Masukkan pilihan (1 atau 2): ");
+        scanf("%d", &pil);
+
+        switch (pil) {
+            case 1:
+                printf("Masukkan nama file untuk menyimpan hasil generate key: ");
+                scanf("%s", key_filename);
+
+                file_key = fopen(key_filename, "w");
+                if (file_key == NULL) {
+                    printf("Gagal membuka file untuk hasil generate key.\n");
+                    break;
+                }
+
+                if (KeyGeneration(&e, &d, &n, file_key)) {
+                    system("cls");
+                    printf("Kunci berhasil di-generate dan disimpan di '%s':\n\n", key_filename);
+                    printf("Public Key (e, n): (%lld, %lld)\n", e, n);
+                    printf("Private Key (d, n): (%lld, %lld)\n", d, n);
+                } else {
+                    printf("Kunci gagal di-generate\n");
+                    fclose(file_key);
+                    break;
+                }
+                fclose(file_key);
+                do {
+                    printf("\nMenu Enkripsi/Deskripsi:\n");
+                    printf("1. Enkripsi\n");
+                    printf("2. Deskripsi\n");
+                    printf("3. Kembali ke Menu Utama\n");
+                    printf("Masukkan pilihan (1, 2, atau 3): ");
+                    scanf("%d", &pil);
+                    switch (pil) {
+                        case 1:
+                            printf("Masukkan pesan: ");
+                            getchar(); // Untuk membersihkan stdin
+                            fgets(str, sizeof(str), stdin);
+                            if (str[strlen(str) - 1] == '\n') {
+                                str[strlen(str) - 1] = '\0';
+                            }
+
+                            panjang_pesan = strlen(str);
+                            printf("Masukkan nama file untuk menyimpan hasil enkripsi: ");
+                            scanf("%s", filename);
+
+                            file = fopen(filename, "w");
+                            if (file == NULL) {
+                                printf("Gagal membuka file.\n");
+                                break;
+                            }
+                            printf("Masukkan public key : ");
+                            scanf("%lld", &e);
+                            printf("Masukkan n: ");
+                            scanf("%lld", &n);
+
+                            enkripsi(e, n, str, panjang_pesan, file);
+
+                            fclose(file);
+                            printf("Hasil enkripsi berhasil disimpan ke dalam file '%s'\n", filename);
+                            break;
+                        case 2:
+                            printf("Masukkan nama file input yang akan didekripsi: ");
+                            scanf("%s", input_filename);
+                            printf("Masukkan nama file output untuk menyimpan hasil dekripsi: ");
+                            scanf("%s", output_filename);
+
+                            // Membuka file input untuk dibaca
+                            file_in = fopen(input_filename, "r");
+                            if (file_in == NULL) {
+                                printf("Gagal membuka file input.\n");
+                                return 1;
+                            }
+
+                            // Membuka file output untuk ditulis
+                            file_out = fopen(output_filename, "w");
+                            if (file_out == NULL) {
+                                printf("Gagal membuka file output.\n");
+                                fclose(file_in);
+                                return 1;
+                            }
+                            printf("Masukkan private key : ");
+                            scanf("%lld", &d);
+                            printf("Masukkan n: ");
+                            scanf("%lld", &n);
+
+                            dekripsi_file(d, n, file_in, file_out);
+
+                            // Menutup file setelah selesai proses dekripsi
+                            fclose(file_in);
+                            fclose(file_out);
+                            printf("Hasil dekripsi berhasil disimpan ke dalam file '%s'\n", output_filename);
+                            break;
+                        case 3:
+                            printf("Kembali ke Menu Utama...\n");
+                            break;
+                        default:
+                            printf("Pilihan tidak tepat.\n");
+                            break;
+                    }
+                } while (pil != 3);
+                break;
+            case 2:
+                printf("Keluar...\n");
+                break;
+            default:
+                printf("Pilihan tidak tepat.\n");
+                break;
+        }
+    } while (pil != 2);
+
     return 0;
 }
