@@ -44,8 +44,8 @@ int main() {
                 }
                 fclose(file_key);
                 do {
-                	system("cls");
-                	printf("Kunci berhasil di-generate dan disimpan di '%s':\n\n", key_filename);
+                    system("cls");
+                    printf("Kunci berhasil di-generate dan disimpan di '%s':\n\n", key_filename);
                     printf("Public Key (e, n): (%lld, %lld)\n", e, n);
                     printf("Private Key (d, n): (%lld, %lld)\n", d, n);
                     printf("\nMenu Enkripsi/Deskripsi:\n");
