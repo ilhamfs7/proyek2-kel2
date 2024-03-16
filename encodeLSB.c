@@ -2,14 +2,17 @@
 #include <string.h>
 #include "encodeLSB.h"
 
+// Membaca 54 bit pertama pada file gambar bmp
 void readBMPHeader(FILE *fin, unsigned char header[54]) {
     fread(header, sizeof(unsigned char), 54, fin);
 }
 
+// membaca data pixel gambar bmp
 void readBMPPixel(FILE *fin, unsigned char pixel_data[3]) {
     fread(pixel_data, sizeof(unsigned char), 3, fin);
 }
 
+//menyisipkan pesan ke dalam gambar bmp
 void encodeLSB(const char *inputimg, const char *outputimg, const char *pesan) {
     FILE *fin, *fout;
     unsigned char header[54], pixel_data[3];
@@ -41,7 +44,8 @@ void encodeLSB(const char *inputimg, const char *outputimg, const char *pesan) {
     }
 
     // Salin sisa gambar tanpa mengubah bit
-    while (readBMPPixel(fin, pixel_data)) {
+    while (!feof(fin)) {
+        readBMPPixel(fin, pixel_data);
         fwrite(pixel_data, sizeof(unsigned char), 3, fout);
     }
 
@@ -49,7 +53,7 @@ void encodeLSB(const char *inputimg, const char *outputimg, const char *pesan) {
     fclose(fin);
     fclose(fout);
 
-    printf("Pesan berhasil disisipkan.\n");
+    printf("Pesan  telah berhasil disisipkan.\n");
 }
 
 
