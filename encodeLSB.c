@@ -2,9 +2,6 @@
 #include <string.h>
 #include "encodeLSB.h"
 
-#include <stdio.h>
-#include <string.h>
-
 int main() {
     FILE *fin, *fout;
     char inputimg[100], outputimg[100], pesan[1000];
