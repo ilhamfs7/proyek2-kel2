@@ -44,14 +44,13 @@ int main() {
                 }
                 fclose(file_key);
                 do {
-                    system("cls");
-                    printf("Kunci berhasil di-generate dan disimpan di '%s':\n\n", key_filename);
+                	system("cls");
+                	printf("Kunci berhasil di-generate dan disimpan di '%s':\n\n", key_filename);
                     printf("Public Key (e, n): (%lld, %lld)\n", e, n);
                     printf("Private Key (d, n): (%lld, %lld)\n", d, n);
                     printf("\nMenu Enkripsi/Deskripsi:\n");
                     printf("1. Enkripsi\n");
-                    printf("2. Dekripsi\n");
-                    printf("3. Kembali ke Menu Utama\n");
+                    printf("2. Kembali ke Menu Utama\n");
                     printf("Masukkan pilihan (1, 2, atau 3): ");
                     scanf("%d", &pil);
                     switch (pil) {
@@ -90,8 +89,7 @@ int main() {
                             break;
                     }
                     getchar(); // Membersihkan buffer stdin
-		    printf("Tekan enter untuk melanjutkan...\n");
-		    getchar(); // Menunggu user menekan enter
+                    getchar(); // Membersihkan buffer stdin
                 } while (pil != 2);
                 break;
             case 2:
@@ -99,6 +97,8 @@ int main() {
                 scanf("%s", input_filename);
                 printf("Masukkan nama file output untuk menyimpan hasil dekripsi: ");
                 scanf("%s", output_filename);
+                printf("Masukkan nama file kunci : ");
+                scanf("%s", key_filename);
 
                 // Membuka file input untuk dibaca
                 file_in = fopen(input_filename, "r");
@@ -114,16 +114,22 @@ int main() {
                     fclose(file_in);
                     return 1;
                 }
-                printf("Masukkan private key : ");
-                scanf("%lld", &d);
-                printf("Masukkan n: ");
-                scanf("%lld", &n);
+                
+                // Membuka file kunci
+                file_key = fopen(key_filename, "r");
+                if (file_in == NULL) {
+                    printf("Gagal membuka file key.\n");
+                    return 1;
+                }
+                
+                fscanf(file_key, "Public Key (e, n): (%*d, %*lld)\nPrivate Key (d, n): (%lld, %lld)", &d, &n);
 
                 dekripsi(d, n, file_in, file_out);
 
                 // Menutup file setelah selesai proses dekripsi
                 fclose(file_in);
                 fclose(file_out);
+                fclose(file_key);
                 printf("Hasil dekripsi berhasil disimpan ke dalam file '%s'\n", output_filename);
                 break;
             case 3:
@@ -134,7 +140,6 @@ int main() {
                 break;
         }
         getchar(); // Membersihkan buffer stdin
-		printf("Tekan enter untuk melanjutkan...\n");
 		getchar(); // Menunggu user menekan enter
     } while (pil != 3);
 
