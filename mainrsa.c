@@ -50,7 +50,8 @@ int main() {
                     printf("Private Key (d, n): (%lld, %lld)\n", d, n);
                     printf("\nMenu Enkripsi/Deskripsi:\n");
                     printf("1. Enkripsi\n");
-                    printf("2. Kembali ke Menu Utama\n");
+                    printf("2. Dekripsi\n");
+                    printf("3. Kembali ke Menu Utama\n");
                     printf("Masukkan pilihan (1, 2, atau 3): ");
                     scanf("%d", &pil);
                     switch (pil) {
