@@ -25,7 +25,7 @@ long long modular(long long bil, long long pangkat, long long mod)
     long long x, y;
     
 	x = 1;
-	y = pangkat;
+	y = bil;
     while (pangkat > 0)
     {
         if (pangkat % 2 == 1)
@@ -33,7 +33,7 @@ long long modular(long long bil, long long pangkat, long long mod)
         	x = (x * y) % mod;
 		}  
         y = (y * y) % mod;
-        pangkat = pangkat / 2;
+        pangkat /= 2;
     }
     return x % mod;
 }
@@ -144,7 +144,7 @@ int KeyGeneration(long long *e, long long *d, long long *n)
     do
     {
         do
-            p = ((rand() << 15) ^ rand());
+            p = rand();
         while (p % 2 == 0);
 
     } while (!isPrime(p, 5));
@@ -152,7 +152,7 @@ int KeyGeneration(long long *e, long long *d, long long *n)
     do
     {
         do
-            q = ((rand() << 15) ^ rand());
+            q = rand();
         while (q % 2 == 0);
     } while (!isPrime(q, 5));
 
@@ -168,66 +168,37 @@ int KeyGeneration(long long *e, long long *d, long long *n)
     return 1; 
 }
 
-// convert plain teks to ascii
-void ASCIISentence(char *str) {
-    int l = strlen(str);
-    int i;
-    int convert;
-    for (i = 0; i < l; i++) {
-        convert = str[i];
-        printf("%d ", convert);
-    }
-    printf("\n");
-}
-
 // enkripsi
-int *enkripsi(long long e, long long n, char *pesan)
-{
-    int *enkrip;
-    int panjang_pesan, i;
+void enkripsi(long long e, long long n, char *pesan, int panjang_pesan, FILE *file) {
+    int i;
     long long cipher;
 
-    panjang_pesan = strlen(pesan); // Menghitung panjang pesan
-
-    // Alokasi memori untuk array enkrip
-    enkrip = (int *)malloc(panjang_pesan * sizeof(int));
-
-    // Melakukan enkripsi pada setiap karakter pesan
-    for(i = 0; i < panjang_pesan; i++)
-    {
+    for (i = 0; i < panjang_pesan; i++) {
         cipher = modular(pesan[i], e, n);
-        enkrip[i] = cipher;
+        fprintf(file, "%lld ", cipher); // Menulis hasil enkripsi ke dalam file
     }
-
-    return enkrip; // Mengembalikan array enkripsi
+    fprintf(file, "\n");
 }
 
+// deskripsi
+void dekripsi_file(long long d, long long n, FILE *file_in, FILE *file_out) {
+    long long cipher;
+    char c;
 
-
-// Fungsi untuk dekripsi 
-char *dekripsi(long long d, long long n, int *pesan_enkripsi, int panjang_pesan) {
-	int i;
-    char *dekrip;
-	
-	dekrip = (char *)malloc(panjang_pesan * sizeof(char));
-
-    // Melakukan dekripsi pada setiap karakter pesan yang telah dienkripsi
-    for(i = 0; i < panjang_pesan; i++) {
-        long long plain = modular(pesan_enkripsi[i], d, n);
-        dekrip[i] = (char)plain;
+    while (fscanf(file_in, "%lld", &cipher) != EOF) {
+        c = (char)modular(cipher, d, n);
+        fprintf(file_out, "%c", c);
     }
-
-    return dekrip; // Mengembalikan pesan yang telah didekripsi
 }
 
 // Main
 int main() {
     long long e, d, n;
-    int *enkrip;
-    char *dekrip, *token;
-    int pil, i, len;
-    int pesan_enkripsi[len];
+    int pil, i, len, panjang_pesan;
     char str[100];
+    char input_filename[100];
+    char output_filename[100];
+    FILE *file, *file_in, *file_out;
     
 	do
 	{
@@ -256,43 +227,59 @@ int main() {
 	                str[strlen(str) - 1] = '\0';
 	            }
 	            
+				panjang_pesan = strlen(str);
+				printf("Masukkan nama file untuk menyimpan hasil enkripsi: ");
+                char filename[100];
+                scanf("%s", filename);
+
+                file = fopen(filename, "w");
+                if (file == NULL) {
+                    printf("Gagal membuka file.\n");
+                    break;
+                }
+				
 	            printf("Masukkan public key : ");
 	            scanf("%lld", &e);
 	            printf("Masukkan n: ");
 	            scanf("%lld", &n);
 	            
-	            enkrip = enkripsi(e, n, str);
-	            printf("Hasil enkripsi:\n");
-	            for (i = 0; i < strlen(str); i++) {
-	                printf("%d ", enkrip[i]);
-	            }
-	            printf("\n");
-	            free(enkrip);
+                enkripsi(e, n, str, panjang_pesan, file);
+
+                fclose(file);
+                printf("Hasil enkripsi disimpan dalam file '%s'\n", filename);
 	            break;
 	        case 3:
+	        	printf("Masukkan nama file input yang akan didekripsi: ");
+			    scanf("%s", input_filename);
+			    printf("Masukkan nama file output untuk menyimpan hasil dekripsi: ");
+			    scanf("%s", output_filename);
+			
+			    // Membuka file input untuk dibaca
+			    file_in = fopen(input_filename, "r");
+			    if (file_in == NULL) {
+			        printf("Gagal membuka file input.\n");
+			        return 1;
+			    }
+			
+			    // Membuka file output untuk ditulis
+			    file_out = fopen(output_filename, "w");
+			    if (file_out == NULL) {
+			        printf("Gagal membuka file output.\n");
+			        fclose(file_in);
+			        return 1;
+			    }
+			    
 	            printf("Masukkan private key : ");
 	            scanf("%lld", &d);
 	            printf("Masukkan n: ");
 	            scanf("%lld", &n);
 	            
-	            printf("Masukkan pesan terenkripsi: ");
-	            getchar(); // Untuk membersihkan stdin
-	            fgets(str, sizeof(str), stdin);
-	            if (str[strlen(str) - 1] == '\n') {
-	                str[strlen(str) - 1] = '\0';
-	            }
-	            len = strlen(str);
-	            token = strtok(str, " ");
-	            
-	            i = 0;
-	            while (token != NULL) {
-	                pesan_enkripsi[i++] = atoi(token);
-	                token = strtok(NULL, " ");
-	            }
-	            
-	            dekrip = dekripsi(d, n, pesan_enkripsi, len);
-	            printf("Hasil dekripsi: %s\n", dekrip);
-	            free(dekrip);
+			    // Lakukan dekripsi
+			    dekripsi_file(d, n, file_in, file_out);
+
+				// Menutup file setelah selesai proses dekripsi
+				fclose(file_in);
+				fclose(file_out);
 	            break;
 	        case 4:
 	        	printf("Keluar...\n");
