@@ -1,3 +1,11 @@
+a. Petunjuk Instalasi
+b. Petunjuk Konfigurasi
+c. Struktur/Hirarki Program
+d. Daftar Fitur Aplikasi
+Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
+1) 
+2) Enkripsi menggunakan RSA
+
 About Us: 
 Kami adalah mahasiswa semester 2 dari Polteknik Negeri Bandung Jurusan Teknik Komputer dan Informatika Program Studi D3 Teknik Informatika
 - Azka Darajat [AzkaDarajat] (231511036)
