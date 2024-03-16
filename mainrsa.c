@@ -104,7 +104,7 @@ int main() {
                             printf("Masukkan n: ");
                             scanf("%lld", &n);
 
-                            dekripsi_file(d, n, file_in, file_out);
+                            dekripsi(d, n, file_in, file_out);
 
                             // Menutup file setelah selesai proses dekripsi
                             fclose(file_in);
