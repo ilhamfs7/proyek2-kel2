@@ -3,12 +3,12 @@
 
 int main() {
     long long e, d, n;
-    int pil, i, len, panjang_pesan;
+    int pil, i, panjang_pesan;
     char str[100];
-    char input_filename[100];
-    char output_filename[100];
-    char filename[100];
-    char key_filename[100];
+    char input_filename[20];
+    char output_filename[20];
+    char filename[20];
+    char key_filename[20];
     FILE *file, *file_key, *file_in, *file_out;
 
     do {
