@@ -9,8 +9,6 @@ int main() {
     int message_index = 0;
     int bit_index = 0;
 
-    memset(extracted_message, '\0', sizeof(extracted_message));
-
     printf("Masukkan nama file gambar BMP yang akan diekstraksi pesannya: ");
     scanf("%s", input_filename);
 
@@ -23,11 +21,10 @@ int main() {
 
     fread(header, sizeof(unsigned char), 54, file_in);
 
-    extract_message(file_in, extracted_message);
 
     fclose(file_in);
 
-    printf("Pesan yang diekstraksi: %s\n", extracted_message);
+    decodeLSB(input_filename);
 
     return 0;
 }
