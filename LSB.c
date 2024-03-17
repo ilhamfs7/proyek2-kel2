@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "decodeLSB.h"
+#include "decodeLSB.H"
 #include "encodeLSB.h"
 
 int main() {

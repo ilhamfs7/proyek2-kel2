@@ -10,21 +10,13 @@ void encodeLSB(const char* input_filename, const char* output_filename, const ch
 
     fin = fopen(input_filename, "rb");
     if (fin == NULL) {
-<<<<<<< HEAD
-        printf("\nFile tidak ada");
-=======
         printf("File tidak ada");
->>>>>>> 25e8463490f7a2c612a670ea48b7b4650c0f0330
         return;
     }
 
     fout = fopen(output_filename, "wb");
     if (fout == NULL) {
-<<<<<<< HEAD
-        printf("\nGagal membuat file salinan");
-=======
         printf("Gagal membuat file salinan");
->>>>>>> 25e8463490f7a2c612a670ea48b7b4650c0f0330
         fclose(fin);
         return;
     }
@@ -60,11 +52,5 @@ void encodeLSB(const char* input_filename, const char* output_filename, const ch
     fclose(fin);
     fclose(fout);
 
-<<<<<<< HEAD
     printf("\npesan berhasil di sisipkan.\n");
 }
-=======
-    printf("\nsukses sisip pesan");
-}
-
->>>>>>> 25e8463490f7a2c612a670ea48b7b4650c0f0330
