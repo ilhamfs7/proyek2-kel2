@@ -1,55 +1,56 @@
+#include "encodeLSB.h"
 #include <stdio.h>
 #include <string.h>
-#include "encodeLSB.h"
 
-void readBMPHeader(FILE *fin, unsigned char header[54]) {
-    fread(header, sizeof(unsigned char), 54, fin);
-}
-
-void readBMPPixel(FILE *fin, unsigned char pixel_data[3]) {
-    fread(pixel_data, sizeof(unsigned char), 3, fin);
-}
-
-void encodeLSB(const char *inputimg, const char *outputimg, const char *pesan) {
+void encodeLSB(const char* input_filename, const char* output_filename, const char* message) {
     FILE *fin, *fout;
-    unsigned char header[54], pixel_data[3];
-    int index_pesan;
+    unsigned char header[54];
+    unsigned char pixel_data[3];
+    int index_pesan, panjang_pesan;
 
-    // Buka file input dan output
-    fin = fopen(inputimg, "rb");
-    fout = fopen(outputimg, "wb");
-
-    if (fin == NULL || fout == NULL) {
-        printf("Gagal membuka file.");
+    fin = fopen(input_filename, "rb");
+    if (fin == NULL) {
+        printf("\nFile tidak ada");
         return;
     }
 
-    // Baca header BMP
-    readBMPHeader(fin, header);
+    fout = fopen(output_filename, "wb");
+    if (fout == NULL) {
+        printf("\nGagal membuat file salinan");
+        fclose(fin);
+        return;
+    }
+
+    fread(header, sizeof(unsigned char), 54, fin);
     fwrite(header, sizeof(unsigned char), 54, fout);
 
-    // Sisipkan pesan ke dalam LSB
+    panjang_pesan = strlen(message);
+
+    unsigned char panjang_pesan_bytes[3];
+    panjang_pesan_bytes[0] = (panjang_pesan >> 16) & 0xFF;
+    panjang_pesan_bytes[1] = (panjang_pesan >> 8) & 0xFF;
+    panjang_pesan_bytes[2] = panjang_pesan & 0xFF;
+    fwrite(panjang_pesan_bytes, sizeof(unsigned char), 3, fout);
+
     index_pesan = 0;
-    while (pesan[index_pesan] != '\0') {
-        char sisipPesan = pesan[index_pesan];
-        for (int i = 7; i >= 0; i--) {
-            readBMPPixel(fin, pixel_data);
-            pixel_data[0] = (pixel_data[0] & 0xFE) | ((sisipPesan >> i) & 1);
-            fwrite(pixel_data, sizeof(unsigned char), 3, fout);
+    while (message[index_pesan] != '\0') {
+        char sisipPesan = message[index_pesan];
+        int i = 7;
+        while (i >= 0) {
+            fread(&pixel_data, sizeof(unsigned char), 3, fin);
+            pixel_data[0] = (pixel_data[0] & 0xFE) | ((sisipPesan >> i) & 1); 
+            fwrite(&pixel_data, sizeof(unsigned char), 3, fout);
+            i--;
         }
         index_pesan++;
     }
 
-    // Salin sisa gambar tanpa mengubah bit
-    while (readBMPPixel(fin, pixel_data)) {
-        fwrite(pixel_data, sizeof(unsigned char), 3, fout);
+    while (fread(&pixel_data, sizeof(unsigned char), 3, fin)) {
+        fwrite(&pixel_data, sizeof(unsigned char), 3, fout);
     }
 
-    // Tutup file
     fclose(fin);
     fclose(fout);
 
-    printf("Pesan berhasil disisipkan.\n");
+    printf("\npesan berhasil di sisipkan.\n");
 }
-
-
