@@ -1,33 +1,33 @@
-	#include <stdio.h>
-	#include <string.h>
-	#include "decodeLSB.h"
-	#include "encodeLSB.h"
+#include <stdio.h>
+#include <string.h>
+#include "decodeLSB.h"
+#include "encodeLSB.h"
 	
-	int main() {
-	    int pilihan;
-	    char inputimg[100], outputimg[100], pesan[1000];
+int main() {
+	int pilihan;
+	char inputimg[100], outputimg[100], pesan[1000];
 	
-	    do {
-	    	printf("-------------------------------------------\n");
-	    	printf("|                                         |\n");
-	    	printf("|             Selamat Datang!             |\n");
-			printf("|           di Steganografi LSB           |\n");
-	    	printf("|                                         |\n");
-	    	printf("|                                         |\n");
-	    	printf("-------------------------------------------\n");
-	    	printf("-------------------------------------------\n");
-	    	printf("|                                         |\n");
-	    	printf("|         Mau Sembunyikan Pesan?          |\n");
-			printf("|         Tempat ini Solusinya!           |\n");
-	    	printf("|                                         |\n");
-	    	printf("|                                         |\n");
-	    	printf("-------------------------------------------\n");
-	        printf("\n\nMenu:\n");
-	        printf("1. Enkripsi LSB\n");
-	        printf("2. Dekripsi LSB\n");
-	        printf("3. Keluar\n");
-	        printf("Pilih menu: ");
-	        scanf("%d", &pilihan);
+	do {
+	    printf("-------------------------------------------\n");
+	    printf("|                                         |\n");
+	    printf("|             Selamat Datang!             |\n");
+	    printf("|           di Steganografi LSB           |\n");
+	    printf("|                                         |\n");
+	    printf("|                                         |\n");
+	    printf("-------------------------------------------\n");
+	    printf("-------------------------------------------\n");
+	    printf("|                                         |\n");
+	    printf("|         Mau Sembunyikan Pesan?          |\n");
+	    printf("|         Tempat ini Solusinya!           |\n");
+	    printf("|                                         |\n");
+	    printf("|                                         |\n");
+	    printf("-------------------------------------------\n");
+	    printf("\n\nMenu:\n");
+	    printf("1. Enkripsi LSB\n");
+	    printf("2. Dekripsi LSB\n");
+	    printf("3. Keluar\n");
+	    printf("Pilih menu: ");
+	    scanf("%d", &pilihan);
 	
 	        switch (pilihan) {
 	        	case 1:
