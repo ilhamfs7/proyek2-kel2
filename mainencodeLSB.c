@@ -1,22 +1,22 @@
 #include <stdio.h>
-#include <string.h>
 #include "encodeLSB.h"
 
 int main() {
-    char inputimg[100], outputimg[100], pesan[1000];
+    char input_filename[100];
+    char output_filename[100];
+    char message[1000];
 
-    printf("Masukkan nama file gambar BMP yang akan diubah: ");
-    scanf("%s", inputimg);
+    printf("Masukkan nama file gambar BMP yang akan dienkripsi pesannya: ");
+    scanf("%s", input_filename);
 
     printf("Masukkan pesan yang akan disisipkan: ");
-    getchar();
-    fgets(pesan, sizeof(pesan), stdin);
-    pesan[strcspn(pesan, "\n")] = 0;
+    getchar(); // Clear the input buffer
+    fgets(message, sizeof(message), stdin);
 
-    printf("Masukkan nama file hasil penyisipan: ");
-    scanf("%s", outputimg);
+    printf("Masukkan nama file untuk salinan(.bmp): ");
+    scanf("%s", output_filename);
 
-    encodeLSB(inputimg, outputimg, pesan);
+    encodeLSB(input_filename, output_filename, message);
 
     return 0;
 }
