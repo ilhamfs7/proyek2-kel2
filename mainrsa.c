@@ -19,7 +19,7 @@ int main() {
         printf("=================================\n");
         printf("Menu Utama:\n");
         printf("1. Generate Kunci\n");
-        printf("2. Deskripsi\n");
+        printf("2. Dekripsi\n");
         printf("3. Keluar\n");
         printf("Masukkan pilihan (1, 2 atau 3): ");
         scanf("%d", &pil);
