@@ -8,6 +8,8 @@ void decodeLSB(const char* input_filename) {
     unsigned char header[54];
     unsigned char pixel_data[3];
     char extracted_message[1000] = {0}; // Inisialisasi dengan null
+    int message_index = 0;
+    int bit_index = 0;
 
     file_in = fopen(input_filename, "rb");
     if (file_in == NULL) {
@@ -22,10 +24,8 @@ void decodeLSB(const char* input_filename) {
     int panjang_pesan = (panjang_pesan_bytes[0] << 16) | (panjang_pesan_bytes[1] << 8) | panjang_pesan_bytes[2];
 
     // Mengatur kembali file pointer ke awal data piksel
-    fseek(file_in, 54, SEEK_SET); // 54 byte header
+   // fseek(file_in, 54, SEEK_SET); // 54 byte header
 
-    int message_index = 0;
-    int bit_index = 0;
 
     while (fread(&pixel_data, sizeof(unsigned char), 3, file_in)) {
         if (message_index >= panjang_pesan)
@@ -42,7 +42,7 @@ void decodeLSB(const char* input_filename) {
         }
     }
 
-    fclose(file_in);
+    fclose(file_in); 
 
-    printf("Pesan yang diekstraksi: %s\n", extracted_message);
+    printf("Pesan yang diekstraksi dari file %s: %s\n",input_filename, extracted_message);
 }
