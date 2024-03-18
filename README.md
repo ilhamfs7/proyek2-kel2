@@ -1,7 +1,26 @@
 a. Petunjuk Instalasi
-b. Petunjuk Konfigurasi
-c. Struktur/Hirarki Program
-d. Daftar Fitur Aplikasi
+1) Petunjuk Instalasi RSA
+   Untuk melakukan instalasi RSA, maka file yang perlu diunduh adalah :
+   a) rsa.h
+   b) rsa.c
+   c) mainrsa.c
+3) Petunjuk Instalasi LSB
+   Untuk melakukan instalasi LSB, maka file yang perlu diunduh adalah :
+   a) encodeLSB.h
+   b) encodeLSB.c
+   c) decodeLSB.h
+   d) decodeLSB.c
+b. Struktur/Hirarki Program
+Pada saat ini, struktur dari program yang dibuat masih terbagi menjadi 2 yaitu struktur untuk RSA dan LSB
+1) Struktur RSA
+   a) Menu Utama
+   - Generate Key
+     - Enkripsi
+     - Keluar
+   - Dekripsi
+   - Keluar
+3) Struktur LSB
+c. Daftar Fitur Aplikasi
 Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
 1) Generate Kunci Public dan Private untuk RSA
 2) Enkripsi menggunakan RSA
