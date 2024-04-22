@@ -1,4 +1,4 @@
-a. Petunjuk Instalasi
+### Petunjuk Instalasi
 1) Petunjuk Instalasi RSA
    Untuk melakukan instalasi RSA, maka file yang perlu diunduh adalah :
    a) rsa.h
