@@ -4,6 +4,36 @@
 #include <time.h> // Untuk time()
 #include "rsa.h"
 
+int is_txt_file(const char *filename) {
+    const char *extension;
+	extension = strrchr(filename, '.');
+    if (extension != NULL && strcmp(extension, ".txt") == 0) {
+        return 1;
+    } else {
+    	printf("File harus memiliki ekstensi .txt\n");
+        return 0; 
+    }
+}
+
+FILE *createFile(const char *filename) {
+	FILE *file;
+	file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Gagal membuka file.\n");
+    }
+    return file;
+}
+
+FILE *openFile(const char *filename) {
+	FILE *file;
+	file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Gagal membuka file.\n");
+    }
+    return file;
+}
+
+
 long long mulmod(long long a, long long b, long long mod)
 {
     long long x = 0, y = a % mod;
