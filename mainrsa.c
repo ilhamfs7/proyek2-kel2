@@ -4,7 +4,7 @@
 
 int main() {
     long long e, d, n;
-    int pil, i, panjang_pesan;
+    int pil, i, panjang_pesan, validasi;
     char str[100];
     char input_filename[20];
     char output_filename[20];
@@ -26,15 +26,14 @@ int main() {
 
         switch (pil) {
             case 1:
-                printf("Masukkan nama file untuk menyimpan hasil generate key: ");
-                scanf("%s", key_filename);
-
-                file_key = fopen(key_filename, "w");
-                if (file_key == NULL) {
-                    printf("Gagal membuka file untuk hasil generate key.\n");
-                    break;
-                }
-
+            	do {
+					printf("Masukkan nama file untuk menyimpan hasil generate key (.txt): ");
+                	scanf("%s", key_filename);
+					validasi = (!is_txt_file(key_filename));	
+				} while (validasi == 1);
+				    
+                file_key = createFile(key_filename);
+        
                 if (KeyGeneration(&e, &d, &n, file_key)) {
                     system("cls");
                 } else {
@@ -61,16 +60,16 @@ int main() {
                             if (str[strlen(str) - 1] == '\n') {
                                 str[strlen(str) - 1] = '\0';
                             }
-
                             panjang_pesan = strlen(str);
-                            printf("Masukkan nama file untuk menyimpan hasil enkripsi: ");
-                            scanf("%s", filename);
-
-                            file = fopen(filename, "w");
-                            if (file == NULL) {
-                                printf("Gagal membuka file.\n");
-                                break;
-                            }
+                            
+                            do {
+                            	printf("Masukkan nama file untuk menyimpan hasil enkripsi (.txt): ");
+                            	scanf("%s", filename);
+                            	validasi = (!is_txt_file(filename));
+							} while (validasi == 1);
+							
+							file = createFile(filename);
+							 
                             printf("Masukkan public key : ");
                             scanf("%lld", &e);
                             printf("Masukkan n: ");
@@ -80,6 +79,8 @@ int main() {
 
                             fclose(file);
                             printf("Hasil enkripsi berhasil disimpan ke dalam file '%s'\n", filename);
+                            getchar();
+                            getchar();
                             break;
                         case 2:
                             printf("Kembali ke Menu Utama...\n");
@@ -88,39 +89,30 @@ int main() {
                             printf("Pilihan tidak tepat.\n");
                             break;
                     }
-                    getchar(); // Membersihkan buffer stdin
-                    getchar(); // Membersihkan buffer stdin
+                    //getchar(); // Membersihkan buffer stdin
                 } while (pil != 2);
                 break;
             case 2:
-            	printf("Masukkan nama file input yang akan didekripsi: ");
-                scanf("%s", input_filename);
-                printf("Masukkan nama file output untuk menyimpan hasil dekripsi: ");
-                scanf("%s", output_filename);
-                printf("Masukkan nama file kunci : ");
-                scanf("%s", key_filename);
-
-                // Membuka file input untuk dibaca
-                file_in = fopen(input_filename, "r");
-                if (file_in == NULL) {
-                    printf("Gagal membuka file input.\n");
-                    return 1;
-                }
-
-                // Membuka file output untuk ditulis
-                file_out = fopen(output_filename, "w");
-                if (file_out == NULL) {
-                    printf("Gagal membuka file output.\n");
-                    fclose(file_in);
-                    return 1;
-                }
-                
-                // Membuka file kunci
-                file_key = fopen(key_filename, "r");
-                if (file_in == NULL) {
-                    printf("Gagal membuka file key.\n");
-                    return 1;
-                }
+            	do {
+            		printf("Masukkan nama file input yang akan didekripsi (.txt): ");
+                	scanf("%s", input_filename);
+                	validasi = (!is_txt_file(input_filename));
+				} while (validasi == 1);
+            	file_in = openFile(input_filename);
+            	
+            	do {
+            		printf("Masukkan nama file output untuk menyimpan hasil dekripsi (.txt): ");
+                	scanf("%s", output_filename);
+                	validasi = (!is_txt_file(output_filename));
+				} while (validasi == 1);
+				file_out = createFile(output_filename);
+				
+                do {
+                	printf("Masukkan nama file kunci (.txt) : ");
+                	scanf("%s", key_filename);
+                	validasi = (!is_txt_file(key_filename));
+				} while (validasi == 1);
+				file_key = openFile(key_filename);
                 
                 fscanf(file_key, "Public Key (e, n): (%*d, %*lld)\nPrivate Key (d, n): (%lld, %lld)", &d, &n);
 
@@ -131,6 +123,7 @@ int main() {
                 fclose(file_out);
                 fclose(file_key);
                 printf("Hasil dekripsi berhasil disimpan ke dalam file '%s'\n", output_filename);
+                getchar();
                 break;
             case 3:
             	printf("Keluar ...\n");
@@ -139,9 +132,8 @@ int main() {
                 printf("Pilihan tidak tepat.\n");
                 break;
         }
-        getchar(); // Membersihkan buffer stdin
+        //getchar(); // Membersihkan buffer stdin
 		getchar(); // Menunggu user menekan enter
     } while (pil != 3);
-
     return 0;
 }
