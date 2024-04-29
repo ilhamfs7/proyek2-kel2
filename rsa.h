@@ -1,6 +1,11 @@
 #ifndef RSA
 #define RSA
 
+// Operasi File
+int is_txt_file(const char *filename);
+FILE *createFile(const char *filename);
+FILE *openFile(const char *filename);
+
 // Melakukan operasi perkalian modular
 long long mulmod(long long a, long long b, long long mod);
 
