@@ -17,15 +17,15 @@ void open_image(const char *filename, ImageData *image) {
     fseek(file, 0, SEEK_SET);   							
     
 
-    image->buffer = (uint8_t *)malloc(image->buffer_size); 	// Alokasi memori untuk buffer gambar
+    image->buffer = (uint8_t *)malloc(image->buffer_size); 
     if (!image->buffer) {
-        printf("ERROR: Memory allocation failed\n");   		// Menampilkan pesan error jika alokasi memori gagal
-        fclose(file);   									// Menutup file
-        exit(EXIT_FAILURE); 								// Menghentikan program dengan status error
+        printf("ERROR: Memory allocation failed\n");   		
+        fclose(file);   									
+        exit(EXIT_FAILURE); 								
     }
 
-    fread(image->buffer, 1, image->buffer_size, file);   	// Membaca isi file ke dalam buffer
-    fclose(file);   										// Menutup file
+    fread(image->buffer, 1, image->buffer_size, file);   	
+    fclose(file);   										
 }
 
 
@@ -33,7 +33,7 @@ void open_image(const char *filename, ImageData *image) {
 // Fungsi untuk menutup buffer gambar
 void close_image(ImageData *image) {
     // Implementasi fungsi close_image
- 	free(image->buffer);    								// Membebaskan memori yang dialokasikan untuk buffer gambar
+ 	free(image->buffer);    							
 }
 
 // Fungsi untuk menyisipkan pesan ke dalam gambar
@@ -74,23 +74,22 @@ void encode(const char *source_image, const char *dest_image, const char *messag
     fwrite(&message_length_be, sizeof(uint16_t), 1, outfile); // Menulis panjang pesan
 
     // Menambahkan pesan
-    fwrite(message, 1, message_length, outfile); 			// Menulis pesan
-    fwrite("$t3g0", 1, strlen("$t3g0"), outfile);		    // Mengganti MESSAGE_TERMINATOR
+    fwrite(message, 1, message_length, outfile); 			
+    fwrite("$t3g0", 1, strlen("$t3g0"), outfile);		   
 
-    fclose(outfile);    									// Menutup file tujuan
-    close_image(&image);    								// Menutup buffer gambar
-
-    printf("Berhasil enkripsi pesan \n"); 					// Menampilkan pesan keberhasilan
+    fclose(outfile);    								
+    close_image(&image);    						
+    printf("Berhasil enkripsi pesan \n"); 				
 }
 
 // Fungsi untuk mengekstrak pesan dari gambar
 void decode(const char *image_path) {
     // Implementasi fungsi decode
      ImageData image;
-    open_image(image_path, &image); 						 // Membuka file gambar
+    open_image(image_path, &image); 						
 
-    uint8_t *buffer = image.buffer;    						// Mendapatkan pointer ke buffer gambar
-    size_t buffer_size = image.buffer_size;   				// Mendapatkan ukuran buffer gambar
+    uint8_t *buffer = image.buffer;    					
+    size_t buffer_size = image.buffer_size;   			
 
     // Mencari panjang pesan dalam komentar
     size_t pos = 0; // Posisi awal pencarian
