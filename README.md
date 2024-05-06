@@ -22,7 +22,7 @@ Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
 5) Dekripsi menggunakan LSB
 
 ## **About Us** 
-Kami adalah mahasiswa semester 2 dari Polteknik Negeri Bandung Jurusan Teknik Komputer dan Informatika Program Studi D3 Teknik Informatika
+Kami adalah mahasiswa semester 2 Polteknik Negeri Bandung, Jurusan Teknik Komputer dan Informatika, Program Studi D3 Teknik Informatika
 1. Azka Darajat [AzkaDarajat](https://github.com/AzkaDarajat) (231511036)
 2. M. Ilham Fadillah Suherlan [ilhamfs7](https://github.com/ilhamfs7) (231511053)
 3. Nazla Kayla [n4zla](https://github.com/n4zla) (231511057)
