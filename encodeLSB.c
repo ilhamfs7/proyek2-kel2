@@ -2,11 +2,43 @@
 #include <stdio.h>
 #include <string.h>
 
-void encodeLSB(const char* input_filename, const char* output_filename, const char* message) {
+Node* createNode(char data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Memori penuh!");
+        exit(1);
+    }
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+Node* insertEnd(Node* head, char data) {
+    if (head == NULL) {
+        return createNode(data);
+    } else {
+        Node* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = createNode(data);
+        return head;
+    }
+}
+
+void freeList(Node* head) {
+    Node* temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+void encode(const char* input_filename, const char* output_filename, const char* message) {
     FILE *fin, *fout;
     unsigned char header[54];
     unsigned char pixel_data[3];
-    int index_pesan, panjang_pesan;
 
     fin = fopen(input_filename, "rb");
     if (fin == NULL) {
@@ -24,7 +56,13 @@ void encodeLSB(const char* input_filename, const char* output_filename, const ch
     fread(header, sizeof(unsigned char), 54, fin);
     fwrite(header, sizeof(unsigned char), 54, fout);
 
-    panjang_pesan = strlen(message);
+    // Menentukan panjang pesan
+    int panjang_pesan = 0;
+    Node* temp = message;
+    while (temp != NULL) {
+        panjang_pesan++;
+        temp = temp->next;
+    }
 
     unsigned char panjang_pesan_bytes[3];
     panjang_pesan_bytes[0] = (panjang_pesan >> 16) & 0xFF;
@@ -32,9 +70,10 @@ void encodeLSB(const char* input_filename, const char* output_filename, const ch
     panjang_pesan_bytes[2] = panjang_pesan & 0xFF;
     fwrite(panjang_pesan_bytes, sizeof(unsigned char), 3, fout);
 
-    index_pesan = 0;
-    while (message[index_pesan] != '\0') {
-        char sisipPesan = message[index_pesan];
+    // Memasukkan pesan ke dalam gambar
+    temp = message;
+    while (temp != NULL) {
+        char sisipPesan = temp->data;
         int i = 7;
         while (i >= 0) {
             fread(&pixel_data, sizeof(unsigned char), 3, fin);
@@ -42,9 +81,10 @@ void encodeLSB(const char* input_filename, const char* output_filename, const ch
             fwrite(&pixel_data, sizeof(unsigned char), 3, fout);
             i--;
         }
-        index_pesan++;
+        temp = temp->next;
     }
 
+    // Menyalin sisa gambar
     while (fread(&pixel_data, sizeof(unsigned char), 3, fin)) {
         fwrite(&pixel_data, sizeof(unsigned char), 3, fout);
     }
