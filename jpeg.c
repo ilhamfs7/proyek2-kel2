@@ -5,15 +5,17 @@
 // Fungsi untuk membuka dan membaca file gambar
 void open_image(const char *filename, ImageData *image) {
     // Implementasi fungsi open_image
-     FILE *file = fopen(filename, "rb");    					// Membuka file dalam mode baca binary
+     FILE *file = fopen(filename, "rb");    					
     if (!file) {
-        printf("ERROR: Cannot open source image\n");  		// Menampilkan pesan error jika file tidak dapat dibuka
-        exit(EXIT_FAILURE); 								// Menghentikan program dengan status error
+        printf("ERROR: Cannot open source image\n");  		
+        exit(EXIT_FAILURE); 								
+        
     }
 
-    fseek(file, 0, SEEK_END);   							// Pindahkan pointer file ke akhir file
-    image->buffer_size = ftell(file);  						// Dapatkan ukuran file
-    fseek(file, 0, SEEK_SET);   							// Kembalikan pointer file ke awal file
+    fseek(file, 0, SEEK_END);   							
+    image->buffer_size = ftell(file);  						
+    fseek(file, 0, SEEK_SET);   							
+    
 
     image->buffer = (uint8_t *)malloc(image->buffer_size); 	// Alokasi memori untuk buffer gambar
     if (!image->buffer) {
@@ -92,35 +94,35 @@ void decode(const char *image_path) {
 
     // Mencari panjang pesan dalam komentar
     size_t pos = 0; // Posisi awal pencarian
-    while (pos < buffer_size - 4) {   						 // Loop sampai ke 4 byte terakhir dari buffer
-        if (buffer[pos] == 0xFF && buffer[pos + 1] == 0xFE) { // Jika ditemukan marker COM
-            uint16_t message_length_be;    						// Panjang pesan dalam big-endian
-            memcpy(&message_length_be, &buffer[pos + 2], sizeof(uint16_t));    // Mendapatkan panjang pesan
+    while (pos < buffer_size - 4) {   						 
+        if (buffer[pos] == 0xFF && buffer[pos + 1] == 0xFE) { 
+            uint16_t message_length_be;    						
+            memcpy(&message_length_be, &buffer[pos + 2], sizeof(uint16_t));   
 
-            size_t message_length = message_length_be;		 // Mengkonversi panjang pesan ke ukuran yang sesuai
+            size_t message_length = message_length_be;		
 
-            char *message = (char *)malloc(message_length + 1); // Alokasi memori untuk pesan
+            char *message = (char *)malloc(message_length + 1);
             if (!message) {
-                printf("ERROR: Memory allocation failed\n");   // Menampilkan pesan error jika alokasi memori gagal
-                close_image(&image);    						// Menutup buffer gambar
-                exit(EXIT_FAILURE); 							// Menghentikan program dengan status error
+                printf("ERROR: Memory allocation failed\n");   
+                close_image(&image);    					
+                exit(EXIT_FAILURE); 							
             }
 
-            memcpy(message, &buffer[pos + 4], message_length); 	// Mendapatkan pesan dari buffer gambar
-            message[message_length] = '\0'; 					// Menambahkan terminator pada pesan
+            memcpy(message, &buffer[pos + 4], message_length); 
+            message[message_length] = '\0'; 					
 
-            printf("Hidden Message: %s\n", message);   			// Menampilkan pesan tersembunyi
+            printf("Hidden Message: %s\n", message);   			
 
-            free(message);  									// Membebaskan memori pesan
-            break;  											// Keluar dari loop
+            free(message);  									
+            break;  											
         }
-        pos++;  												// Pindahkan ke posisi berikutnya
+        pos++;  												
     }
 
-    if (pos >= buffer_size - 4) { 								 // Jika tidak ada pesan yang ditemukan
-        printf("No Hidden Message Found\n");   					 // Menampilkan pesan bahwa tidak ada pesan yang ditemukan
+    if (pos >= buffer_size - 4) { 								
+        printf("No Hidden Message Found\n");   					 
     }
 
-    close_image(&image);    // Menutup buffer gambar
+    close_image(&image);    
 
 }
