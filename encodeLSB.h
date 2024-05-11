@@ -1,6 +1,14 @@
-#ifndef ENCODELSB_H
-#define ENCODELSB_H
+#ifndef encodeLSB_h
+#define encodeLSB_h
 
-void encodeLSB(const char* input_filename, const char* output_filename, const char* message);
+typedef struct Node {
+    char data;
+    struct Node* next;
+} Node;
+
+Node* createNode(char data);
+Node* insertEnd(Node* head, char data);
+void freeList(Node* head);
+void encode(const char* input_filename, const char* output_filename, const char* message);
 
 #endif
