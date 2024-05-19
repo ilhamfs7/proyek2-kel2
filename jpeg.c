@@ -16,19 +16,15 @@ void open_image(const char *filename, ImageData *image) {
     image->buffer_size = ftell(file);  						
     fseek(file, 0, SEEK_SET);   							
     
-
     image->buffer = (uint8_t *)malloc(image->buffer_size); 
     if (!image->buffer) {
         printf("ERROR: Memory allocation failed\n");   		
         fclose(file);   									
         exit(EXIT_FAILURE); 								
     }
-
     fread(image->buffer, 1, image->buffer_size, file);   	
     fclose(file);   										
 }
-
-
 
 // Fungsi untuk menutup buffer gambar
 void close_image(ImageData *image) {
@@ -41,37 +37,37 @@ void encode(const char *source_image, const char *dest_image, const char *messag
     // Implementasi fungsi encode
     
    ImageData image;
-    open_image(source_image, &image);  						// Membuka file gambar sumber
+    open_image(source_image, &image);  					
 
-    FILE *outfile = fopen(dest_image, "wb"); 				// Membuka file tujuan dalam mode tulis binary
+    FILE *outfile = fopen(dest_image, "wb"); 				
     if (!outfile) {
-        printf("ERROR: Cannot open destination file\n");  	// Menampilkan pesan error jika file tujuan tidak dapat dibuka
-        close_image(&image);    							// Menutup buffer gambar
-        exit(EXIT_FAILURE); 								// Menghentikan program dengan status error
+        printf("ERROR: Cannot open destination file\n");  	
+        close_image(&image);    					
+        exit(EXIT_FAILURE); 							
     }
 
-    uint8_t *buffer = image.buffer;    						// Mendapatkan pointer ke buffer gambar
-    size_t buffer_size = image.buffer_size;   				// Mendapatkan ukuran buffer gambar
+    uint8_t *buffer = image.buffer;    						
+    size_t buffer_size = image.buffer_size;   				
 
     // Menambahkan terminator pada pesan
-    size_t message_length = strlen(message); 				// Mendapatkan panjang pesan
-    size_t total_message_length = message_length ; 			// Total panjang pesan setelah ditambah terminator
+    size_t message_length = strlen(message); 			
+    size_t total_message_length = message_length ; 			
 
     // Memeriksa apakah pesan dapat disisipkan dalam gambar
     if (total_message_length * 8 > buffer_size) {
-        printf("ERROR: Need larger file size\n"); 			// Menampilkan pesan error jika gambar tidak cukup besar
-        close_image(&image);    							// Menutup buffer gambar
-        fclose(outfile);    								// Menutup file tujuan
-        exit(EXIT_FAILURE); 								// Menghentikan program dengan status error
+        printf("ERROR: Need larger file size\n"); 		
+        close_image(&image);    						
+        fclose(outfile);    							
+        exit(EXIT_FAILURE); 								
     }
 
     // Menyalin semua data dari gambar ke gambar yang akan disimpan
-    fwrite(buffer, 1, buffer_size, outfile); 				// Menyalin data gambar ke file tujuan
+    fwrite(buffer, 1, buffer_size, outfile); 				
 
     // Menambahkan marker COM (Comment) untuk menyimpan panjang pesan
-    uint16_t message_length_be = total_message_length;    	// Panjang pesan dalam big-endian
-    fwrite("\xFF\xFE", 1, 2, outfile); 						// Menulis marker COM
-    fwrite(&message_length_be, sizeof(uint16_t), 1, outfile); // Menulis panjang pesan
+    uint16_t message_length_be = total_message_length;    	
+    fwrite("\xFF\xFE", 1, 2, outfile); 						
+    fwrite(&message_length_be, sizeof(uint16_t), 1, outfile); 
 
     // Menambahkan pesan
     fwrite(message, 1, message_length, outfile); 			
