@@ -7,7 +7,7 @@ void open_image(const char *filename, ImageData *image) {
     // Implementasi fungsi open_image
      FILE *file = fopen(filename, "rb");    					
     if (!file) {
-        printf("ERROR: Cannot open source image\n");  		
+        printf("ERROR: FILE TIDAK DITEMUKAN!\n");  		
         exit(EXIT_FAILURE); 								
         
     }
@@ -18,7 +18,7 @@ void open_image(const char *filename, ImageData *image) {
     
     image->buffer = (uint8_t *)malloc(image->buffer_size); 
     if (!image->buffer) {
-        printf("ERROR: Memory allocation failed\n");   		
+        printf("ERROR: Memory penuh!\n");   		
         fclose(file);   									
         exit(EXIT_FAILURE); 								
     }
@@ -41,7 +41,7 @@ void encode(const char *source_image, const char *dest_image, const char *messag
 
     FILE *outfile = fopen(dest_image, "wb"); 				
     if (!outfile) {
-        printf("ERROR: Cannot open destination file\n");  	
+        printf("ERROR: FILE TIDAK DAPAT DIBUKA!\n");  	
         close_image(&image);    					
         exit(EXIT_FAILURE); 							
     }
@@ -55,7 +55,7 @@ void encode(const char *source_image, const char *dest_image, const char *messag
 
     // Memeriksa apakah pesan dapat disisipkan dalam gambar
     if (total_message_length * 8 > buffer_size) {
-        printf("ERROR: Need larger file size\n"); 		
+        printf("ERROR: Ukuran file terlalu kecil!\n"); 		
         close_image(&image);    						
         fclose(outfile);    							
         exit(EXIT_FAILURE); 								
@@ -98,7 +98,7 @@ void decode(const char *image_path) {
 
             char *message = (char *)malloc(message_length + 1);
             if (!message) {
-                printf("ERROR: Memory allocation failed\n");   
+                printf("ERROR: Memory penuh!\n");   
                 close_image(&image);    					
                 exit(EXIT_FAILURE); 							
             }
@@ -106,7 +106,7 @@ void decode(const char *image_path) {
             memcpy(message, &buffer[pos + 4], message_length); 
             message[message_length] = '\0'; 					
 
-            printf("Hidden Message: %s\n", message);   			
+            printf("Pesan tersembunyi : %s\n", message);   			
 
             free(message);  									
             break;  											
@@ -115,7 +115,7 @@ void decode(const char *image_path) {
     }
 
     if (pos >= buffer_size - 4) { 								
-        printf("No Hidden Message Found\n");   					 
+        printf("Tidak ada pesan yang disembunyikan.\n");   					 
     }
 
     close_image(&image);    
