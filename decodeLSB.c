@@ -1,4 +1,5 @@
 #include "decodeLSB.h"
+#include "linkedlistLSB.h"
 #include <stdio.h>
 #include <string.h>
 

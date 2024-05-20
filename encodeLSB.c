@@ -1,54 +1,40 @@
 #include "encodeLSB.h"
+#include "linkedlistLSB.h"
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
-Node* createNode(char data) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    if (newNode == NULL) {
-        printf("Memori penuh!");
-        exit(1);
+void readAndDeleteFile(char* filename, char* message, size_t message_size) {
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
     }
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
-}
 
-Node* insertEnd(Node* head, char data) {
-    if (head == NULL) {
-        return createNode(data);
-    } else {
-        Node* temp = head;
-        while (temp->next != NULL) {
-            temp = temp->next;
-        }
-        temp->next = createNode(data);
-        return head;
+    fgets(message, message_size, file);
+
+    fclose(file);
+
+    if (remove(filename) != 0) {
+        perror("Error deleting file");
     }
 }
 
-void freeList(Node* head) {
-    Node* temp;
-    while (head != NULL) {
-        temp = head;
-        head = head->next;
-        free(temp);
-    }
-}
-
-void encode(const char* input_filename, const char* output_filename, const char* message) {
+void encodeLSB(const char* input_filename, const char* output_filename, char* message) {
     FILE *fin, *fout;
     unsigned char header[54];
     unsigned char pixel_data[3];
+    int index_pesan, panjang_pesan;
 
     fin = fopen(input_filename, "rb");
     if (fin == NULL) {
-        printf("\nFile tidak ada");
+        printf("File tidak ada");
         return;
     }
 
     fout = fopen(output_filename, "wb");
     if (fout == NULL) {
-        printf("\nGagal membuat file salinan");
+        printf("Gagal membuat file salinan");
         fclose(fin);
         return;
     }
@@ -56,13 +42,47 @@ void encode(const char* input_filename, const char* output_filename, const char*
     fread(header, sizeof(unsigned char), 54, fin);
     fwrite(header, sizeof(unsigned char), 54, fout);
 
-    // Menentukan panjang pesan
-    int panjang_pesan = 0;
-    Node* temp = message;
-    while (temp != NULL) {
-        panjang_pesan++;
-        temp = temp->next;
+	Node* head = NULL;
+    Node* tail = NULL;
+    index_pesan = 0;
+    while (message[index_pesan] != '\0') {
+        // Membuat linked list dari pesan
+        if (head == NULL) {
+            head = createNode(message[index_pesan]);
+            tail = head;
+        } else {
+            tail = insertEnd(tail, message[index_pesan]);
+        }
+        index_pesan++;
     }
+
+    // Melakukan pertukaran informasi pada setiap dua node
+    Node* current = head;
+    while (current != NULL && current->next != NULL) {
+        swapNodeData(current, current->next);
+        current = current->next->next;
+    }
+
+    // Menyisipkan node baru dengan angka acak setiap dua node
+    current = head;
+    srand(time(NULL)); // Inisialisasi seed untuk fungsi rand()
+    while (current != NULL && current->next != NULL) {
+        current = insertAfter(current, rand() % 10 + '0'); // Menghasilkan angka acak antara 0-9
+        current = current->next->next;
+    }
+
+    // Mengembalikan informasi pada linked list ke variabel message
+    index_pesan = 0;
+    current = head;
+    while (current != NULL) {
+        message[index_pesan++] = current->data;
+        Node* temp = current;
+        current = current->next;
+        free(temp); // Membebaskan memori setiap node yang sudah tidak dibutuhkan
+    }
+    message[index_pesan] = '\0'; // Menambahkan NULL terminator pada akhir pesan
+
+    panjang_pesan = strlen(message);
 
     unsigned char panjang_pesan_bytes[3];
     panjang_pesan_bytes[0] = (panjang_pesan >> 16) & 0xFF;
@@ -70,10 +90,9 @@ void encode(const char* input_filename, const char* output_filename, const char*
     panjang_pesan_bytes[2] = panjang_pesan & 0xFF;
     fwrite(panjang_pesan_bytes, sizeof(unsigned char), 3, fout);
 
-    // Memasukkan pesan ke dalam gambar
-    temp = message;
-    while (temp != NULL) {
-        char sisipPesan = temp->data;
+    index_pesan = 0;
+    while (message[index_pesan] != '\0') {
+        char sisipPesan = message[index_pesan];
         int i = 7;
         while (i >= 0) {
             fread(&pixel_data, sizeof(unsigned char), 3, fin);
@@ -81,10 +100,9 @@ void encode(const char* input_filename, const char* output_filename, const char*
             fwrite(&pixel_data, sizeof(unsigned char), 3, fout);
             i--;
         }
-        temp = temp->next;
+        index_pesan++;
     }
 
-    // Menyalin sisa gambar
     while (fread(&pixel_data, sizeof(unsigned char), 3, fin)) {
         fwrite(&pixel_data, sizeof(unsigned char), 3, fout);
     }
@@ -92,5 +110,5 @@ void encode(const char* input_filename, const char* output_filename, const char*
     fclose(fin);
     fclose(fout);
 
-    printf("\npesan berhasil di sisipkan.\n");
+    printf("\nsukses sisip pesan\n");
 }
