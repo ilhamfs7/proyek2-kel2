@@ -1,5 +1,5 @@
-#ifndef LINKEDLIST_H
-#define LINKEDLIST_H
+#ifndef LINKEDLISTLSB_H
+#define LINKEDLISTLSB_H
 
 typedef struct Node {
     char data;
