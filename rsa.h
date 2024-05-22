@@ -30,4 +30,16 @@ void enkripsi(long long e, long long n, char *pesan, int panjang_pesan, FILE *fi
 // Prosedur untuk dekripsi
 void dekripsi(long long d, long long n, FILE *file_in, FILE *file_out);
 
+// Fungsi untuk menggeser baris-baris dalam array state
+void shiftRows(unsigned char *state, int columns);
+
+// Fungsi untuk menggeser satu baris dalam array state ke kanan
+void shiftRow(unsigned char *state, int columns, unsigned char nbr);
+
+// Fungsi untuk mengembalikan baris-baris dalam array state ke posisi semula
+void reverseShiftRows(unsigned char *state, int columns);
+
+// Fungsi untuk menggeser balik satu baris dalam array state ke kiri
+void reverseShiftRow(unsigned char *state, int columns, unsigned char nbr);
+
 #endif
