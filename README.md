@@ -25,6 +25,6 @@ Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
 Kami adalah mahasiswa semester 2 Polteknik Negeri Bandung, Jurusan Teknik Komputer dan Informatika, Program Studi D3 Teknik Informatika
 1. Azka Darajat [AzkaDarajat](https://github.com/AzkaDarajat) (231511036)
 2. M. Ilham Fadillah Suherlan [ilhamfs7](https://github.com/ilhamfs7) (231511053)
-3. Nazla Kayla [n4zla](https://github.com/nazlakayla) (231511057)
+3. Nazla Kayla [nazlakayla](https://github.com/nazlakayla) (231511057)
 4. Nino Erico Apandi Nainggolan [ninoerico](https://github.com/ninoerico) (231511058)
 5. Yani Rahmawati [yanirahmawati234](https://github.com/yanirahmawati234) (231511063)
