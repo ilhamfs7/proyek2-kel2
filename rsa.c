@@ -200,14 +200,86 @@ int KeyGeneration(long long *e, long long *d, long long *n, FILE *file_key)
     return 1; 
 }
 
-// enkripsi
-void enkripsi(long long e, long long n, char *pesan, int panjang_pesan, FILE *file) {
-    int i;
-    long long cipher;
+char** alokasiMatriks(int baris, int kolom) {
+	int i;
+    char **matriks = (char **)malloc(baris * sizeof(char *));
+    for (i = 0; i < baris; i++) {
+        matriks[i] = (char *)malloc(kolom * sizeof(char));
+    }
+    return matriks;
+}
 
-    for (i = 0; i < panjang_pesan; i++) {
-        cipher = modular(pesan[i], e, n);
-        fprintf(file, "%lld ", cipher); // Menulis hasil enkripsi ke dalam file
+void isiMatriks(char **matriks, int baris, int kolom, const char *input) {
+    int i, j, index = 0;
+    int length = strlen(input);
+    for (i = 0; i < baris; i++) {
+        for (j = 0; j < kolom; j++) {
+            if (index < length) {
+                matriks[i][j] = input[index++];
+            } else {
+                matriks[i][j] = ' ';  // Isi dengan spasi jika input habis
+            }
+        }
+    }
+}
+
+void dealokasiMatriks(char **matriks, int baris) {
+	int i;
+    for (i = 0; i < baris; i++) {
+        free(matriks[i]);
+    }
+    free(matriks);
+}
+
+void shiftRow(char *state, int columns, unsigned char nbr) {
+	unsigned char i;
+	int j;
+    for (i = 0; i < nbr; i++) {
+        char tmp = state[columns - 1];
+        for (j = columns - 1; j > 0; j--) {
+            state[j] = state[j - 1];
+        }
+        state[0] = tmp;
+    }
+}
+
+void shiftRows(char **state, int columns) {
+	int i;
+    for (i = 0; i < 2; i++) {
+        shiftRow(state[i], columns, i + 1);
+    }
+}
+
+void reverseShiftRow(char *state, int columns, unsigned char nbr) {
+	unsigned char i;
+	int j;
+    for (i = 0; i < nbr; i++) {
+        char tmp = state[0];
+        for (j = 0; j < columns - 1; j++) {
+            state[j] = state[j + 1];
+        }
+        state[columns - 1] = tmp;
+    }
+}
+
+void reverseShiftRows(char **state, int columns) {
+	int i;
+    for (i = 0; i < 2; i++) {
+        reverseShiftRow(state[i], columns, i + 1);
+    }
+}
+
+// enkripsi
+void enkripsi(char **matriks, long long e, long long n, int kolom, FILE *file) {
+	long long cipher;
+	int i, j;
+    shiftRows(matriks, kolom);
+    fprintf(file, "%d\n", kolom);
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < kolom; j++) {
+            cipher = modular(matriks[i][j], e, n);
+            fprintf(file, "%lld ", cipher); // Menulis hasil enkripsi ke dalam file
+        }
     }
     fprintf(file, "\n");
 }
@@ -215,50 +287,43 @@ void enkripsi(long long e, long long n, char *pesan, int panjang_pesan, FILE *fi
 // deskripsi
 void dekripsi(long long d, long long n, FILE *file_in, FILE *file_out) {
     long long cipher;
-    char c;
+    int i, j, kolom;
+    char **dekrip, c[1000];
 
+    // Membaca jumlah kolom dari file input
+    fscanf(file_in, "%d\n", &kolom);
+
+    // Dekripsi pesan
+    i = 0;
     while (fscanf(file_in, "%lld", &cipher) != EOF) {
-        c = (char)modular(cipher, d, n);
-        fprintf(file_out, "%c", c);
+        c[i] = (char)modular(cipher, d, n);
+        i++;
     }
-}
+    c[i] = '\0';
 
-void shiftRows(unsigned char *state, int columns) {
-    // Geser baris pertama sebanyak 1 kolom ke kanan
-    shiftRow(state, columns, 1);
-    // Geser baris kedua sebanyak 2 kolom ke kanan
-    shiftRow(state + columns, columns, 2);
-}
+    // Alokasi memori untuk matriks
+    dekrip = alokasiMatriks(2, kolom);
 
-void shiftRow(unsigned char *state, int columns, unsigned char nbr) {
-    int i, j;
-    unsigned char tmp;
-    // Geser baris ke kanan sebanyak nbr kolom
-    for (i = 0; i < nbr; i++) {
-        tmp = state[columns - 1]; // Simpan byte terakhir
-        for (j = columns - 1; j > 0; j--) {
-            state[j] = state[j - 1];
+    // Mengisi matriks dengan hasil dekripsi
+    isiMatriks(dekrip, 2, kolom, c);
+    
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < kolom; j++) {
+            printf("%c ", dekrip[i][j]);
         }
-        state[0] = tmp; // Pindahkan byte yang disimpan ke awal
+        printf("\n");
     }
-}
+    
+    reverseShiftRows(dekrip, kolom);
 
-void reverseShiftRows(unsigned char *state, int columns) {
-    // Geser balik baris pertama sebanyak 1 kolom ke kiri
-    reverseShiftRow(state, columns, 1);
-    // Geser balik baris kedua sebanyak 2 kolom ke kiri
-    reverseShiftRow(state + columns, columns, 2);
-}
-
-void reverseShiftRow(unsigned char *state, int columns, unsigned char nbr) {
-    int i, j;
-    unsigned char tmp;
-    // Geser baris ke kiri sebanyak nbr kolom
-    for (i = 0; i < nbr; i++) {
-        tmp = state[0]; // Simpan byte pertama
-        for (j = 0; j < columns - 1; j++) {
-            state[j] = state[j + 1];
+    // Menulis hasil dekripsi dari matriks ke file output
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < kolom; i++) {
+            fprintf(file_out, "%c", dekrip[j][i]);
         }
-        state[columns - 1] = tmp; // Pindahkan byte yang disimpan ke akhir
     }
+    fprintf(file_out, "\n");
+
+    // Dealokasi memori
+    dealokasiMatriks(dekrip, 2);
 }
