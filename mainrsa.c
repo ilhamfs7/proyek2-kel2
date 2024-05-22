@@ -4,12 +4,13 @@
 
 int main() {
     long long e, d, n;
-    int pil, i, panjang_pesan, validasi;
+    int pil, i, panjang_pesan, validasi, kolom, baris = 2;
     char str[100];
     char input_filename[20];
     char output_filename[20];
     char filename[20];
     char key_filename[20];
+    char **matriks;
     FILE *file, *file_key, *file_in, *file_out;
 
     do {
@@ -61,6 +62,10 @@ int main() {
                                 str[strlen(str) - 1] = '\0';
                             }
                             panjang_pesan = strlen(str);
+			    kolom = (panjang_pesan + 1) / baris;
+                            
+                            matriks = alokasiMatriks(baris, kolom);
+                            isiMatriks(matriks, baris, kolom, str);
                             
                             do {
                             	printf("Masukkan nama file untuk menyimpan hasil enkripsi (.txt): ");
@@ -75,7 +80,7 @@ int main() {
                             printf("Masukkan n: ");
                             scanf("%lld", &n);
 
-                            enkripsi(e, n, str, panjang_pesan, file);
+                            enkripsi(matriks, e, n, kolom, file);
 
                             fclose(file);
                             printf("Hasil enkripsi berhasil disimpan ke dalam file '%s'\n", filename);
