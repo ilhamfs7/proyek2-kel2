@@ -222,3 +222,43 @@ void dekripsi(long long d, long long n, FILE *file_in, FILE *file_out) {
         fprintf(file_out, "%c", c);
     }
 }
+
+void shiftRows(unsigned char *state, int columns) {
+    // Geser baris pertama sebanyak 1 kolom ke kanan
+    shiftRow(state, columns, 1);
+    // Geser baris kedua sebanyak 2 kolom ke kanan
+    shiftRow(state + columns, columns, 2);
+}
+
+void shiftRow(unsigned char *state, int columns, unsigned char nbr) {
+    int i, j;
+    unsigned char tmp;
+    // Geser baris ke kanan sebanyak nbr kolom
+    for (i = 0; i < nbr; i++) {
+        tmp = state[columns - 1]; // Simpan byte terakhir
+        for (j = columns - 1; j > 0; j--) {
+            state[j] = state[j - 1];
+        }
+        state[0] = tmp; // Pindahkan byte yang disimpan ke awal
+    }
+}
+
+void reverseShiftRows(unsigned char *state, int columns) {
+    // Geser balik baris pertama sebanyak 1 kolom ke kiri
+    reverseShiftRow(state, columns, 1);
+    // Geser balik baris kedua sebanyak 2 kolom ke kiri
+    reverseShiftRow(state + columns, columns, 2);
+}
+
+void reverseShiftRow(unsigned char *state, int columns, unsigned char nbr) {
+    int i, j;
+    unsigned char tmp;
+    // Geser baris ke kiri sebanyak nbr kolom
+    for (i = 0; i < nbr; i++) {
+        tmp = state[0]; // Simpan byte pertama
+        for (j = 0; j < columns - 1; j++) {
+            state[j] = state[j + 1];
+        }
+        state[columns - 1] = tmp; // Pindahkan byte yang disimpan ke akhir
+    }
+}
