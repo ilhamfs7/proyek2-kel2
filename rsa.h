@@ -25,21 +25,30 @@ int privateKey(int a, int b);
 int KeyGeneration(long long *e, long long *d, long long *n, FILE *file_key);
 
 // Prosedur untuk Enkripsi
-void enkripsi(long long e, long long n, char *pesan, int panjang_pesan, FILE *file);
+void enkripsi(char **matriks, long long e, long long n, int kolom, FILE *file);
 
 // Prosedur untuk dekripsi
 void dekripsi(long long d, long long n, FILE *file_in, FILE *file_out);
 
-// Fungsi untuk menggeser baris-baris dalam array state
-void shiftRows(unsigned char *state, int columns);
+// Fungsi untuk mengalokasi matriks
+char** alokasiMatriks(int baris, int kolom);
 
-// Fungsi untuk menggeser satu baris dalam array state ke kanan
-void shiftRow(unsigned char *state, int columns, unsigned char nbr);
+// Prosedur untuk mengisi matriks
+void isiMatriks(char **matriks, int baris, int kolom, const char *input);
 
-// Fungsi untuk mengembalikan baris-baris dalam array state ke posisi semula
-void reverseShiftRows(unsigned char *state, int columns);
+// Prosedur untuk mendealokasi matriks
+void dealokasiMatriks(char **matriks, int baris);
 
-// Fungsi untuk menggeser balik satu baris dalam array state ke kiri
-void reverseShiftRow(unsigned char *state, int columns, unsigned char nbr);
+// Prosedur untuk menggeser baris-baris dalam array state
+void shiftRows(char **state, int columns);
+
+// Prosedur untuk menggeser satu baris dalam array state ke kanan
+void shiftRow(char *state, int columns, unsigned char nbr);
+
+// Prosedur untuk mengembalikan baris-baris dalam array state ke posisi semula
+void reverseShiftRows(char **state, int columns);
+
+// Prosedur untuk menggeser balik satu baris dalam array state ke kiri
+void reverseShiftRow(char *state, int columns, unsigned char nbr);
 
 #endif
