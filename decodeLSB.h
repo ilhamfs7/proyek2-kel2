@@ -1,6 +1,7 @@
-#ifndef decodeLSB_h
-#define decodeLSB_h
+#ifndef DECODELSB_H
+#define DECODELSB_H
 
-void decodeLSB(const char* input_filename);
+void createMessageFile(const char* pesan);
+void decodeLSB(const char* input_filename, char** pesan);
 
-#endif 
+#endif
