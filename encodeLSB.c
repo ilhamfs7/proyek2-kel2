@@ -1,8 +1,9 @@
 #include "encodeLSB.h"
-#include "linkedlistLSB.h"
+#include "linkedlist.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <stdlib.h>
 
 void readAndDeleteFile(char* filename, char* message, size_t message_size) {
     FILE* file = fopen(filename, "r");
@@ -34,7 +35,7 @@ void encodeLSB(const char* input_filename, const char* output_filename, char* me
 
     fout = fopen(output_filename, "wb");
     if (fout == NULL) {
-        printf("Gagal membuat file salinan");
+        printf("Gagal membuat file salinan");-
         fclose(fin);
         return;
     }
@@ -42,46 +43,54 @@ void encodeLSB(const char* input_filename, const char* output_filename, char* me
     fread(header, sizeof(unsigned char), 54, fin);
     fwrite(header, sizeof(unsigned char), 54, fout);
 
-	Node* head = NULL;
+    Node* head = NULL;
     Node* tail = NULL;
     index_pesan = 0;
     while (message[index_pesan] != '\0') {
-        // Membuat linked list dari pesan
         if (head == NULL) {
             head = createNode(message[index_pesan]);
             tail = head;
         } else {
-            tail = insertEnd(tail, message[index_pesan]);
+            tail = insertEnd(head, message[index_pesan]);
         }
         index_pesan++;
     }
-
+    
     // Melakukan pertukaran informasi pada setiap dua node
-    Node* current = head;
-    while (current != NULL && current->next != NULL) {
-        swapNodeData(current, current->next);
-        current = current->next->next;
+    if (head && head->next) { // Jika list memiliki lebih dari satu node
+        Node* current = head;
+        do {
+            swapNodeData(current, current->next);
+            current = current->next->next;
+        } while (current != head && current->next != head);
     }
 
     // Menyisipkan node baru dengan angka acak setiap dua node
-    current = head;
-    srand(time(NULL)); // Inisialisasi seed untuk fungsi rand()
-    while (current != NULL && current->next != NULL) {
+    Node* current = head;
+    srand(time(NULL)); // Inisialisasi seed untuk fungsi rand()	
+    while (current->next != head) {
         current = insertAfter(current, rand() % 10 + '0'); // Menghasilkan angka acak antara 0-9
         current = current->next->next;
+        if (current == head) {
+        	break;
+        }
     }
+
+    // Melakukan circular data
+    circularKanan(head);
 
     // Mengembalikan informasi pada linked list ke variabel message
     index_pesan = 0;
     current = head;
-    while (current != NULL) {
+    do {
         message[index_pesan++] = current->data;
         Node* temp = current;
         current = current->next;
-        free(temp); // Membebaskan memori setiap node yang sudah tidak dibutuhkan
-    }
-    message[index_pesan] = '\0'; // Menambahkan NULL terminator pada akhir pesan
-
+        free(temp);
+    } while (current != head);
+    
+	message[index_pesan] = '\0'; // Menambahkan NULL terminator pada akhir pesan
+	
     panjang_pesan = strlen(message);
 
     unsigned char panjang_pesan_bytes[3];
@@ -96,7 +105,7 @@ void encodeLSB(const char* input_filename, const char* output_filename, char* me
         int i = 7;
         while (i >= 0) {
             fread(&pixel_data, sizeof(unsigned char), 3, fin);
-            pixel_data[0] = (pixel_data[0] & 0xFE) | ((sisipPesan >> i) & 1); 
+            pixel_data[0] = (pixel_data[0] & 0xFE) | ((sisipPesan >> i) & 1);
             fwrite(&pixel_data, sizeof(unsigned char), 3, fout);
             i--;
         }
