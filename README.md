@@ -25,7 +25,7 @@ Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
 4) Enkripsi menggunakan LSB
 5) Dekripsi menggunakan LSB
 
-## **Penerapan Linked List **
+## **Penerapan Linked List**
 Program Linked list kami menggunakan struktur data  double circular linked saat pesan telah dienkripsi menggunakan algoritma RSA sebelum disisipkan ke dalam gambar menggunakan metode LSB lalu nantinya dalam proses dekripsi, program akan menggunakan linked list untuk mengembalikan urutan isi pesan sebelum menampilkan hasil dekripsi.
 
 ## **About Us** 
