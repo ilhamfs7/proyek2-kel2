@@ -10,8 +10,9 @@ git clone https://github.com/ilhamfs7/proyek2-kel2.git
 Setelah mendapatkan repository, program dapat dijalankan pada code editor yang digunakan. Pada program ini, program utama berada pada file main.c
 ## **Struktur/Hirarki Program**
 Berikut merupakan alur yang akan dilalui pengguna pada program ini : 
-
-![proyek drawio](https://github.com/ilhamfs7/proyek2-kel2/assets/107221750/ac0e28ee-dde5-43bf-b0b2-124fc185e2e6)
+<p align="center">
+  ![proyek drawio](https://github.com/ilhamfs7/proyek2-kel2/assets/107221750/ac0e28ee-dde5-43bf-b0b2-124fc185e2e6)
+</p>
 <br> Berdasarkan alur diatas, terdapat tiga pilihan menu yaitu Enkripsi, Dekripsi dan Keluar. Pada menu Enkripsi dan Dekripsi akan dilakukan menggunakan dua metode yaitu RSA dan LSB.
 ## **Daftar Fitur Aplikasi**
 Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
