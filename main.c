@@ -92,8 +92,6 @@ int main() {
 			} while (validasi == 1);
 				
 			file = createFile(filename);
-				
-				file = createFile(filename);
 				 
                 printf("Masukkan public key : ");
                 scanf("%lld", &e);
