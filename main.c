@@ -69,23 +69,29 @@ int main() {
                 printf("Public Key (e, n): (%lld, %lld)\n", e, n);
                 printf("Private Key (d, n): (%lld, %lld)\n", d, n);
                 
-                printf("Masukkan pesan: ");
-                getchar(); // Untuk membersihkan stdin
-                fgets(str, sizeof(str), stdin);
-                if (str[strlen(str) - 1] == '\n') {
-                    str[strlen(str) - 1] = '\0';
-                }
-                panjang_pesan = strlen(str);
-    			kolom = (panjang_pesan + 1) / baris;
-                
-                matriks = alokasiMatriks(baris, kolom);
-                isiMatriks(matriks, baris, kolom, str);
-                
-                do {
-                	printf("Masukkan nama file untuk menyimpan hasil enkripsi (.txt): ");
-                	scanf("%s", filename);
-                	validasi = (!is_txt_file(filename));
-				} while (validasi == 1);
+		printf("Masukkan pesan: ");
+		fgets(str, sizeof(str), stdin);
+							
+		// Membersihkan buffer
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+							
+		panjang_pesan = strlen(str);
+		kolom = (panjang_pesan + 1) / baris;
+							
+		matriks = alokasiMatriks(baris, kolom);
+		isiMatriks(matriks, baris, kolom, str);
+							
+		do {
+			printf("Masukkan nama file untuk menyimpan hasil enkripsi (.txt): ");
+			scanf("%s", filename);
+			validasi = (!is_txt_file(filename));
+				if (validasi == 1) {
+					printf("File harus memiliki ekstensi .txt\n");
+				}
+			} while (validasi == 1);
+				
+			file = createFile(filename);
 				
 				file = createFile(filename);
 				 
