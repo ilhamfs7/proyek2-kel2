@@ -52,7 +52,8 @@ int main() {
                 system("cls");
                 do {
                     printf("-------------------------------------------------------------\n");
-                    printf("-------------------------------------------------------------\n");
+                    printf("                       Enkripsi Pesan                        \n");
+                    printf("-------------------------------------------------------------\n\n");
                     printf("Masukkan nama file untuk menyimpan hasil generate key (.txt): ");
                     scanf("%s", key_filename);
                     validasi = (!is_txt_file(key_filename));    
@@ -173,9 +174,11 @@ int main() {
                 break;
             case 2:
                 system("cls");
-                
-                printf("----------------------------------------------------------\n");
-                printf("\nMasukkan nama file gambar(.bmp / .jpg): ");
+
+                printf("-------------------------------------------------------------\n");
+                printf("                       Dekripsi Pesan                        \n");
+                printf("-------------------------------------------------------------\n\n");
+                printf("Masukkan nama file gambar(.bmp / .jpg): ");
                 scanf("%s", input_filename);
 
                 // Get the file extension
