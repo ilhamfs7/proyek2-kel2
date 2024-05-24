@@ -10,6 +10,7 @@ Selain dengan mengunduhnya, dapat juga dilakukan git clone dengan perintah :
 git clone https://github.com/ilhamfs7/proyek2-kel2.git
 ```
 Setelah mendapatkan repository, program dapat dijalankan pada code editor yang digunakan. Pada program ini, program utama berada pada file main.c
+
 ## **Struktur/Hirarki Program**
 Berikut merupakan alur yang akan dilalui pengguna pada program ini : 
 <p align="center">
@@ -23,8 +24,10 @@ Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
 3) Dekripsi menggunakan RSA
 4) Enkripsi menggunakan LSB
 5) Dekripsi menggunakan LSB
+
 ## **Penerapan Linked List **
 Program Linked list kami menggunakan struktur data  double circular linked saat pesan telah dienkripsi menggunakan algoritma RSA sebelum disisipkan ke dalam gambar menggunakan metode LSB lalu nantinya dalam proses dekripsi, program akan menggunakan linked list untuk mengembalikan urutan isi pesan sebelum menampilkan hasil dekripsi.
+
 ## **About Us** 
 Kami adalah mahasiswa semester 2 Polteknik Negeri Bandung, Jurusan Teknik Komputer dan Informatika, Program Studi D3 Teknik Informatika
 1. Azka Darajat [AzkaDarajat](https://github.com/AzkaDarajat) (231511036)
