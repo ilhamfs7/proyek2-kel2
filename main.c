@@ -45,7 +45,7 @@ int main() {
         printf("-------------------------------------------\n");
         printf("Pilih menu: ");
         
-        choice = getValidatedInt(1, 3);
+        choice = inputBener(1, 3);
 
         switch(choice) {
             case 1:
