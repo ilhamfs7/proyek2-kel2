@@ -1,5 +1,5 @@
 #include "encodeLSB.h"
-#include "linkedlist.h"
+#include "linkedlistLSB.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
