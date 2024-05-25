@@ -17,6 +17,7 @@ Berikut merupakan alur yang akan dilalui pengguna pada program ini :
   <img src="https://github.com/ilhamfs7/proyek2-kel2/assets/107221750/ac0e28ee-dde5-43bf-b0b2-124fc185e2e6">
 </p>
 <br> Berdasarkan alur diatas, terdapat tiga pilihan menu yaitu Enkripsi, Dekripsi dan Keluar. Pada menu Enkripsi dan Dekripsi akan dilakukan menggunakan dua metode yaitu RSA dan LSB.
+
 ## **Daftar Fitur Aplikasi**
 Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
 1) Generate Kunci Public dan Private untuk RSA
@@ -29,9 +30,30 @@ Adapun fitur dari aplikasi yang kelompok kami buat diantaranya yaitu :
 Program Linked list kami menggunakan struktur data doubly circular linked list saat pesan telah dienkripsi menggunakan algoritma RSA sebelum disisipkan ke dalam gambar menggunakan metode LSB lalu nantinya dalam proses dekripsi, program akan menggunakan linked list untuk mengembalikan urutan isi pesan sebelum menampilkan hasil dekripsi.
 
 ## **About Us** 
-Kami adalah mahasiswa semester 2 Polteknik Negeri Bandung, Jurusan Teknik Komputer dan Informatika, Program Studi D3 Teknik Informatika
-1. Azka Darajat [AzkaDarajat](https://github.com/AzkaDarajat) (231511036)
-2. M. Ilham Fadillah Suherlan [ilhamfs7](https://github.com/ilhamfs7) (231511053)
-3. Nazla Kayla [nazlakayla](https://github.com/nazlakayla) (231511057)
-4. Nino Erico Apandi Nainggolan [ninoerico](https://github.com/ninoerico) (231511058)
-5. Yani Rahmawati [yanirahmawati234](https://github.com/yanirahmawati234) (231511063)
+ami adalah mahasiswa semester 2 Politeknik Negeri Bandung, Jurusan Teknik Komputer dan Informatika, Program Studi D3 Teknik Informatika.
+### Daftar Mahasiswa
+1. **Azka Darajat**  
+   - NIM: 231511036  
+   - GitHub: [AzkaDarajat](https://github.com/AzkaDarajat)
+2. **M. Ilham Fadillah Suherlan**  
+   - NIM: 231511053  
+   - GitHub: [ilhamfs7](https://github.com/ilhamfs7)
+3. **Nazla Kayla**  
+   - NIM: 231511057  
+   - GitHub: [nazlakayla](https://github.com/nazlakayla)
+4. **Nino Erico Apandi Nainggolan**  
+   - NIM: 231511058  
+   - GitHub: [ninoerico](https://github.com/ninoerico)
+5. **Yani Rahmawati**  
+   - NIM: 231511063  
+   - GitHub: [yanirahmawati234](https://github.com/yanirahmawati234)
+
+### Identitas Dosen
+- **Sofy Fitriani, S.S.T., M.Kom**  
+  - NIP: 199106142019032022  
+  - Manajer (Dosen)
+
+### Institusi
+- **Jurusan**: Teknik Komputer dan Informatika
+- **Program Studi**: D3 Teknik Informatika
+- **Kampus**: Politeknik Negeri Bandung
