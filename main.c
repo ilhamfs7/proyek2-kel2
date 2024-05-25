@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "BMP.h"
+#include "encodeLSB.h"
+#include "decodeLSB.h"
 #include "rsa.h"
 #include "JPG.h"
 #include "validasi.h"
@@ -106,7 +107,7 @@ int main() {
 				file = createFile(filename);
 				 
                do {
-                    printf("------------------------------------\n");
+                	printf("------------------------------------\n");
                     printf("Masukkan public key : ");
                     scanf("%lld", &input_e);
                     if (input_e != e) {
