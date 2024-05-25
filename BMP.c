@@ -132,7 +132,9 @@ void encodeLSB(const char* input_filename, const char* output_filename, char* me
     fclose(fin);
     fclose(fout);
 
-    printf("\nsukses sisip pesan\n");
+    printf("---------------------------------------------------------------\n");
+    printf("Hasil enkripsi berhasil disimpan ke dalam file '%s'\n", output_filename);
+    printf("---------------------------------------------------------------\n");
 }
 
 void createMessageFile(const char* pesan) {
