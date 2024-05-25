@@ -1,12 +1,10 @@
-#include "jpeg.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
-#include "Jpeg.h"
-#include "linkedlistLSB.h"
-#include "decodeLSB.h"
-#include "encodeLSB.h"
+#include "JPG.h"
+#include "linkedlist.h"
+#include "BMP.h"
 
 // Fungsi untuk membuka dan membaca file gambar
 void open_image(const char *filename, ImageData *image) {
@@ -38,7 +36,7 @@ void close_image(ImageData *image) {
 }
 
 // Fungsi untuk menyisipkan pesan ke dalam gambar
-void encode_jpeg(const char *source_image, const char *dest_image, const char *message_file) {
+void encode_jpeg(const char *source_image, const char *dest_image, char *message_file) {
     ImageData image;
     open_image(source_image, &image);
 
@@ -49,7 +47,7 @@ void encode_jpeg(const char *source_image, const char *dest_image, const char *m
         exit(EXIT_FAILURE);
     }
 
-    char message[1000];
+    char message[10000];
     readAndDeleteFile(message_file, message, sizeof(message));
 
     // Create doubly circular linked list from message
@@ -128,12 +126,12 @@ void encode_jpeg(const char *source_image, const char *dest_image, const char *m
 }
 
 // Fungsi untuk mengekstrak pesan dari gambar
-void decode_jpeg(const char *image_path) {
+int decode_jpeg(const char *image_path, _Bool* benar) {
   	ImageData image;
     open_image(image_path, &image);
 
     uint8_t *buffer = image.buffer;
-    size_t buffer_size = image.buffer_size;
+    size_t i, buffer_size = image.buffer_size;
 
     size_t pos = 0;
     while (pos < buffer_size - 4) {
@@ -156,7 +154,6 @@ void decode_jpeg(const char *image_path) {
             // Reconstruct the doubly circular linked list from the message
             Node* head = createNode(message[0]);
             Node* tail = head;
-            size_t i;
             for (i = 1; i < strlen(message); i++) {
                 tail = insertEnd(tail, message[i]);
             }
@@ -212,6 +209,11 @@ void decode_jpeg(const char *image_path) {
     }
     if (pos >= buffer_size - 4) {
         printf("Tidak ada pesan yang disembunyikan\n");
+        system("pause");
+        *benar = true;
+		return 0;
     }
     close_image(&image);
+    *benar = false;
+	return 1;
 }
