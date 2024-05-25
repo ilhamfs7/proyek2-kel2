@@ -51,7 +51,7 @@ kami adalah mahasiswa semester 2 Politeknik Negeri Bandung, Jurusan Teknik Kompu
 ### Identitas Dosen
 - **Sofy Fitriani, S.S.T., M.Kom**  
   - NIP: 199106142019032022  
-  - Manajer (Dosen)
+  - Manager (Dosen)
 
 ### Institusi
 - **Jurusan**: Teknik Komputer dan Informatika
