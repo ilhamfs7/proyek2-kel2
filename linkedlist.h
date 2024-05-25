@@ -15,6 +15,5 @@ Node* insertAfter(Node* node, char data);
 void circularKanan(Node* head);
 void circularKiri(Node* head);
 void printList(Node* head);
-int inputBener(int min, int max);
 
 #endif
