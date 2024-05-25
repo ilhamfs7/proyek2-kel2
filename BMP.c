@@ -137,16 +137,9 @@ void encodeLSB(const char* input_filename, const char* output_filename, char* me
 
 void createMessageFile(const char* pesan) {
     char filename[100];
-    do {
-        printf("Masukkan nama file untuk menyimpan pesan (dengan ekstensi .txt): ");
-        scanf("%s", filename);
-        char* extension = strrchr(filename, '.');
-        if (extension == NULL || strcmp(extension, ".txt") != 0) {
-            printf("Nama file harus memiliki ekstensi .txt\n");
-        } else {
-            break;
-        }
-    } while (1);
+    printf("---------------------------------------------------------------\n");
+    printf("Masukkan nama file untuk menyimpan pesan (.txt): ");
+    scanf("%s", filename);
 
     FILE* file = fopen(filename, "w");
     if (file == NULL) {
@@ -157,7 +150,9 @@ void createMessageFile(const char* pesan) {
     fprintf(file, "%s", pesan);
     fclose(file);
 
+    printf("---------------------------------------------------------------\n");
     printf("Pesan berhasil disimpan di file '%s'\n", filename);
+    printf("---------------------------------------------------------------\n");
 }
 
 int decodeLSB(const char* input_filename, char** pesan, _Bool* benar) {
@@ -204,6 +199,7 @@ int decodeLSB(const char* input_filename, char** pesan, _Bool* benar) {
 		return 0;
     }
 
+    printf("-------------------------------------------------------------\n");
     printf("Pesan yang diekstraksi sebelum dikembalikan dengan linkedlist: %s\n", extracted_message);
 
     // Konversi extracted_message menjadi linked list
@@ -268,6 +264,7 @@ int decodeLSB(const char* input_filename, char** pesan, _Bool* benar) {
 
     (*pesan)[index_pesan] = '\0'; // Menambahkan NULL terminator pada akhir pesan
 
+    printf("-------------------------------------------------------------\n");
     printf("Pesan yang diekstraksi setelah dikembalikan dengan linkedlist: %s\n", *pesan);
 
     createMessageFile(*pesan);
