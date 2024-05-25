@@ -56,4 +56,4 @@ kami adalah mahasiswa semester 2 Politeknik Negeri Bandung, Jurusan Teknik Kompu
 ### Institusi
 - **Jurusan**: Teknik Komputer dan Informatika
 - **Program Studi**: D3 Teknik Informatika
-- **Kampus**: Politeknik Negeri Bandung
+- **Instansi**: Politeknik Negeri Bandung
