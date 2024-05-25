@@ -274,7 +274,7 @@ void enkripsi(char **matriks, long long e, long long n, int kolom, FILE *file) {
 	long long cipher;
 	int i, j;
     shiftRows(matriks, kolom);
-    fprintf(file, "%d\n", kolom);
+    fprintf(file, "%d ", kolom);
     for (i = 0; i < 2; i++) {
         for (j = 0; j < kolom; j++) {
             cipher = modular(matriks[i][j], e, n);
@@ -291,7 +291,7 @@ void dekripsi(long long d, long long n, FILE *file_in, FILE *file_out) {
     char **dekrip, c[1000];
 
     // Membaca jumlah kolom dari file input
-    fscanf(file_in, "%d\n", &kolom);
+    fscanf(file_in, "%d ", &kolom);
 
     // Dekripsi pesan
     i = 0;
