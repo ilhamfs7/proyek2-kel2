@@ -38,7 +38,7 @@ void close_image(ImageData *image) {
 }
 
 // Fungsi untuk menyisipkan pesan ke dalam gambar
-void encode_jpeg(const char *source_image, const char *dest_image, char *message_file) {
+void encode_jpeg(const char *source_image, const char *dest_image, const char *message_file) {
     ImageData image;
     open_image(source_image, &image);
 
